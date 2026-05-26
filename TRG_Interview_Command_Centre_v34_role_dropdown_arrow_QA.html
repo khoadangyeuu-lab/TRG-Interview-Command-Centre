@@ -1,0 +1,1961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TRG Interview Command Centre · Even Translation Layout</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fff8f6;--card:#fff;--ink:#1d1215;--muted:#755963;--soft:#b7939e;--line:#efd7df;
+  --pink:#e8526e;--pink2:#c0344f;--rose:#fff0f3;--orange:#ff6b2c;--green:#10a36f;--amber:#d97706;--red:#dc2626;
+  --blue:#2563eb;--shadow:0 12px 40px rgba(150,50,75,.10);--r:20px;--r2:14px
+}
+body{font-family:'DM Sans',sans-serif;background:radial-gradient(circle at top left,#fff0f3 0,#fff8f6 34%,#fff 100%);color:var(--ink);max-width:1180px;margin:auto;min-height:100vh;padding:22px}
+button,input,select,textarea{font-family:inherit}
+.top{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-bottom:16px}
+.hero,.panel,.card{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.hero{padding:24px;position:relative;overflow:hidden}
+.hero:after{content:'';position:absolute;right:-80px;top:-80px;width:220px;height:220px;background:linear-gradient(135deg,var(--pink),var(--orange));border-radius:50%;opacity:.14}
+.kicker{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--pink);margin-bottom:8px}
+h1{font-size:30px;letter-spacing:-.05em;line-height:1.05;margin-bottom:10px}
+.sub{color:var(--muted);font-size:14px;line-height:1.55;max-width:720px}
+.panel{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.field{display:flex;flex-direction:column;gap:5px}
+label{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+input,select,textarea{border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);outline:none;padding:10px 12px;font-size:13.5px}
+input:focus,select:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,82,110,.12)}
+textarea{resize:vertical;min-height:72px;line-height:1.55}
+.sticky{position:sticky;top:12px;z-index:10}
+.scorebar{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
+.metric{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center}
+.metric b{display:block;font-size:21px;color:var(--pink);font-family:'DM Mono',monospace}
+.metric span{font-size:10px;color:var(--soft);font-weight:800;text-transform:uppercase;letter-spacing:.07em}
+.verdict{margin-top:12px;padding:12px;border-radius:14px;background:var(--rose);border:1px solid #f6bcc7;font-weight:800;color:var(--pink2);display:flex;justify-content:space-between;gap:12px;align-items:center}
+.section{margin:18px 0 10px;display:flex;align-items:center;gap:10px}
+.section span{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.14em;color:var(--soft)}
+.section:after{content:'';height:1px;background:var(--line);flex:1}
+.card{padding:18px;margin-bottom:14px}
+.role-brief{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.briefbox{background:#fffafa;border:1px solid var(--line);border-radius:16px;padding:14px}
+.briefbox h3{font-size:13px;margin-bottom:8px;color:var(--pink2)}
+.briefbox ul{padding-left:17px;color:var(--muted);font-size:13px;line-height:1.6}
+.q{border:1px solid var(--line);border-radius:18px;padding:15px;background:#fff;margin-bottom:12px}
+.qhead{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.badge{width:28px;height:28px;border-radius:50%;background:var(--rose);color:var(--pink2);display:grid;place-items:center;font-weight:900;font-size:12px;flex:none;border:1px solid #f4b5c1}
+.qtitle{font-weight:800;font-size:14px;margin-bottom:3px}
+.qtext{font-size:14px;color:var(--muted);line-height:1.55;font-style:italic}
+.intent{font-size:12px;line-height:1.5;color:var(--soft);background:#fff5f7;border-left:3px solid #f4a8b6;border-radius:10px;padding:9px 10px;margin:8px 0}
+.rubric{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:10px 0}
+.scorebtn{border:1.5px solid var(--line);background:#fff;border-radius:13px;padding:9px 6px;cursor:pointer;color:var(--muted);font-weight:800;font-size:12px;transition:.14s}
+.scorebtn small{display:block;font-size:9.5px;font-weight:700;margin-top:2px;color:var(--soft)}
+.scorebtn:hover{border-color:var(--pink);transform:translateY(-1px)}
+.scorebtn.on{background:var(--pink);border-color:var(--pink2);color:#fff}
+.scorebtn.on small{color:#ffe4ea}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:6px 11px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer}
+.chip:hover{border-color:#f4a8b6;color:var(--ink)}
+.chip.on{background:var(--rose);border-color:var(--pink);color:var(--pink2)}
+.chip.red.on{background:#fff1f1;border-color:var(--red);color:var(--red)}
+.chip.green.on{background:#ecfdf5;border-color:var(--green);color:var(--green)}
+.note{width:100%;min-height:46px;margin-top:8px;border-style:dashed}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1.5px solid var(--line);background:#fff;border-radius:13px;padding:10px 15px;font-weight:800;color:var(--muted);cursor:pointer}
+.btn.primary{background:linear-gradient(135deg,var(--pink),var(--pink2));border-color:var(--pink2);color:#fff}
+.btn:hover{transform:translateY(-1px)}
+.output{font-family:'DM Mono',monospace;font-size:12.5px;line-height:1.85;white-space:pre-wrap;background:#fffafa;border:1.5px solid var(--line);border-radius:16px;padding:16px;min-height:120px;color:var(--ink)}
+.tabs{display:flex;gap:8px;margin-bottom:10px}
+.tab{flex:1}
+.tab.on{background:var(--pink);color:#fff;border-color:var(--pink2)}
+.warn{display:none;margin-top:10px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:14px;padding:10px;font-size:12.5px;line-height:1.45}
+.warn.show{display:block}
+
+.copy-toast{position:fixed;right:24px;bottom:24px;z-index:9999;background:#1d1215;color:#fff;border-radius:999px;padding:10px 16px;font-size:12.5px;font-weight:800;box-shadow:0 14px 36px rgba(29,18,21,.18);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+.copy-toast.show{opacity:1;transform:translateY(0)}
+.btn.copy-ok{background:#ecfdf5;border-color:var(--green);color:var(--green)}
+.btn.copy-fail{background:#fff1f1;border-color:var(--red);color:var(--red)}
+
+.script-card{background:linear-gradient(135deg,#fff5f7,#fff);border:1.5px solid #f4a8b6;border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin-bottom:14px}
+.script-head{display:flex;align-items:center;gap:10px;padding:14px 17px;background:var(--rose);cursor:pointer;user-select:none;border-bottom:1px solid var(--line)}
+.script-dot{width:9px;height:9px;border-radius:50%;background:var(--pink);box-shadow:0 0 0 4px rgba(232,82,110,.10);flex:none}
+.script-title{font-size:13px;font-weight:900;color:var(--pink2)}
+.script-sub{font-size:11px;color:var(--soft);margin-top:1px}
+.script-arrow{margin-left:auto;color:var(--soft);font-size:11px;transition:.2s}
+.script-arrow.open{transform:rotate(180deg)}
+.script-body{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s ease;padding:0 18px}
+.script-body.open{max-height:1200px;padding:18px}
+.script-line{font-size:13.5px;line-height:1.85;color:var(--muted);font-style:italic;margin-bottom:12px;padding-left:14px;border-left:3px solid #f4a8b6}
+.script-line:last-child{margin-bottom:0}
+.ms-toggle{margin-top:10px;border:1.5px solid var(--line);border-radius:999px;background:#fff;padding:6px 12px;font-size:12px;font-weight:800;color:var(--muted);cursor:pointer}
+.ms-toggle.on{background:var(--rose);border-color:var(--pink);color:var(--pink2)}
+.ms-hidden{opacity:.35;text-decoration:line-through;text-decoration-color:var(--pink)}
+
+.guide{margin:10px 0 8px;border:1px solid #f4c4cf;background:#fff9fa;border-radius:15px;overflow:hidden}
+.guide-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;cursor:pointer;background:#fff1f4;color:var(--pink2);font-size:12px;font-weight:900}
+.guide-head span:last-child{color:var(--soft);font-size:11px}
+.guide-body{display:none;padding:12px;grid-template-columns:repeat(4,1fr);gap:10px}
+.guide.open .guide-body{display:grid}
+.gbox{border:1px solid var(--line);border-radius:12px;background:#fff;padding:10px}
+.gbox h4{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--pink);margin-bottom:6px}
+.gbox ul{padding-left:16px;color:var(--muted);font-size:12px;line-height:1.5}
+.depth{display:inline-flex;margin-top:8px;border:1px solid var(--line);border-radius:999px;padding:5px 10px;background:#fff;color:var(--soft);font-size:11px;font-weight:800}
+.auto-score{margin-top:8px;display:inline-flex;align-items:center;gap:6px;border:1px solid #bae6fd;background:#f0f9ff;color:#0369a1;border-radius:999px;padding:6px 10px;font-size:11.5px;font-weight:900}
+.mode-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.mode-chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:900;color:var(--muted);cursor:pointer}
+.mode-chip.on{background:var(--rose);border-color:var(--pink);color:var(--pink2)}
+body.compact .guide, body.compact .intent{display:none}
+@media(max-width:950px){.guide-body{grid-template-columns:1fr}}
+
+@media(max-width:850px){body{padding:14px}.top,.role-brief{grid-template-columns:1fr}.rubric{grid-template-columns:repeat(2,1fr)}.scorebar{grid-template-columns:repeat(2,1fr)}}
+
+/* v7 UI polish — preserves full content */
+body{scroll-behavior:smooth}
+.app-shell{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+.flow-timeline{position:sticky;top:0;z-index:30;margin:-22px -22px 18px;padding:10px 22px;background:rgba(255,248,246,.88);backdrop-filter:blur(14px);border-bottom:1px solid rgba(239,215,223,.9)}
+.flow-track{max-width:1180px;margin:auto;display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.flow-step{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 10px;font-size:11px;font-weight:900;color:var(--muted);text-align:center;white-space:nowrap;box-shadow:0 4px 18px rgba(150,50,75,.05)}
+.flow-step b{color:var(--pink2);margin-right:4px}
+.hero,.panel,.card,.script-card{backdrop-filter:blur(10px)}
+.panel.sticky{top:58px;border:1.5px solid #edcfd8}
+.panel:before{content:'Live evaluation dashboard';display:block;font-size:10.5px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--pink);margin-bottom:10px}
+.card{position:relative}
+.card:before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(135deg,rgba(232,82,110,.04),transparent 38%)}
+.q{transition:border-color .16s ease, box-shadow .16s ease, transform .16s ease;background:linear-gradient(180deg,#fff,#fffafa)}
+.q:hover{border-color:#efb2bf;box-shadow:0 10px 30px rgba(150,50,75,.08);transform:translateY(-1px)}
+.qhead{position:relative}
+.badge{box-shadow:0 4px 12px rgba(232,82,110,.12)}
+.intent{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f5d5dd;border-left:4px solid #f4a8b6}
+.guide{box-shadow:inset 0 0 0 1px rgba(255,255,255,.6)}
+.guide-head{letter-spacing:.01em}
+.gbox{background:linear-gradient(180deg,#fff,#fffafa)}
+.scorebtn{min-height:52px}
+.scorebtn.on{box-shadow:0 8px 20px rgba(232,82,110,.20)}
+.chip.green.on{box-shadow:0 5px 14px rgba(16,163,111,.12)}
+.chip.red.on{box-shadow:0 5px 14px rgba(220,38,38,.12)}
+.output{background:linear-gradient(180deg,#fff,#fffafa)}
+.mode-row{position:sticky;top:52px;z-index:20;background:rgba(255,248,246,.88);backdrop-filter:blur(14px);padding:8px 0;margin-top:-4px}
+.mode-chip{box-shadow:0 4px 16px rgba(150,50,75,.05)}
+body.compact .script-card .script-body:not(.open){display:none}
+@media(min-width:1050px){.top{grid-template-columns:minmax(0,1fr) 390px}.hero{min-height:226px}.panel.sticky{align-self:start}.flow-step:hover{border-color:var(--pink);color:var(--pink2)}}
+@media(max-width:850px){.flow-timeline{margin:-14px -14px 14px;padding:8px 14px}.flow-track{display:flex;overflow-x:auto;padding-bottom:3px}.flow-step{min-width:130px}.panel.sticky,.mode-row{position:relative;top:auto}.top{grid-template-columns:1fr}}
+
+
+/* v9 dashboard layout fix — prevents date/role fields from overflowing in the sticky panel */
+.panel{overflow:hidden}
+.panel .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+.panel .field{min-width:0;width:100%}
+.panel input,.panel select{width:100%;min-width:0;max-width:100%;display:block}
+.panel input[type="date"]{appearance:auto;-webkit-appearance:auto}
+.panel input[type="date"]::-webkit-calendar-picker-indicator{margin-left:2px;padding:0;width:16px;height:16px;flex-shrink:0}
+.panel .scorebar{grid-template-columns:repeat(5,minmax(0,1fr))}
+.panel .metric{min-width:0;padding:9px 6px}
+.panel .metric b{font-size:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.panel .metric span{font-size:9.5px;line-height:1.15;display:block;white-space:normal}
+@media(min-width:1050px){.top{grid-template-columns:minmax(0,1fr) minmax(400px,420px)}}
+@media(max-width:520px){.panel .grid{grid-template-columns:1fr}.panel .scorebar{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+
+/* v10 final design polish — cleaner recruiter OS visual layer, content preserved */
+:root{
+  --bg:#f8f6f4;
+  --card:#ffffff;
+  --ink:#171214;
+  --muted:#625861;
+  --soft:#9a8e96;
+  --line:#e8e1e5;
+  --pink:#d94162;
+  --pink2:#ad2845;
+  --rose:#fff4f6;
+  --orange:#f26a2e;
+  --green:#148f65;
+  --amber:#c8750a;
+  --red:#c92a2a;
+  --shadow:0 18px 48px rgba(42,28,36,.08);
+}
+body{
+  background:
+    radial-gradient(circle at 8% 0%, rgba(217,65,98,.10) 0, transparent 29%),
+    linear-gradient(180deg,#fbfaf9 0%,#f8f6f4 100%);
+  color:var(--ink);
+}
+.flow-timeline{
+  background:rgba(248,246,244,.82);
+  border-bottom:1px solid rgba(232,225,229,.88);
+}
+.flow-step{
+  background:rgba(255,255,255,.88);
+  border-color:#ece6ea;
+  color:#6b6269;
+  box-shadow:none;
+}
+.flow-step b{color:var(--pink2)}
+.hero,.panel,.card,.script-card{
+  background:rgba(255,255,255,.94);
+  border-color:#ebe3e7;
+  box-shadow:var(--shadow);
+}
+.hero{padding:28px;border-radius:24px}
+.hero:after{opacity:.09;filter:blur(.2px)}
+.kicker{color:var(--pink2)}
+h1{font-size:32px;letter-spacing:-.055em}
+.sub{color:#6f646c}
+.panel{border-radius:24px;padding:18px 18px 16px}
+.panel:before{color:var(--pink2);letter-spacing:.14em}
+input,select,textarea{
+  border-color:#e6dde2;
+  background:#fff;
+  border-radius:14px;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(217,65,98,.10)}
+.metric{background:#fbfaf9;border-color:#eee7eb;border-radius:16px}
+.metric b{color:#241b20}
+.metric span{color:#9a8e96}
+.verdict{background:#fff7f3;border-color:#f6d7c8;color:#9a3412;border-radius:16px}
+.warn{border-radius:16px}
+.section span{color:#8d8189}
+.card{border-radius:22px;padding:20px}
+.role-brief{gap:14px}
+.briefbox{background:#fbfaf9;border-color:#eee7eb;border-radius:18px}
+.briefbox h3{color:#262024}
+.q{background:#fff;border-color:#e9e2e6;border-radius:20px;padding:16px 16px 15px}
+.q:hover{border-color:#e7c2cb;box-shadow:0 16px 42px rgba(42,28,36,.08)}
+.badge{background:#f8eef1;color:var(--pink2);border-color:#efd1d9}
+.qtitle{font-size:14.5px}.qtext{color:#625861}
+.intent{background:#fbfaf9;border-color:#eee7eb;border-left-color:#e7a0af;color:#786e75}
+.guide{background:#fff;border-color:#eee0e5;border-radius:18px}
+.guide-head{background:#fbf4f6;color:#3a3036;border-bottom:1px solid #eee0e5}
+.guide-head span:first-child:before{content:'';display:inline-block;width:7px;height:7px;border-radius:999px;background:var(--pink);margin-right:8px;vertical-align:1px;box-shadow:0 0 0 3px rgba(225,70,105,.12)}
+.gbox{background:#fff;border-color:#eee7eb;border-radius:14px}
+.gbox h4{color:#766b73}
+.depth{background:#fbfaf9;border-color:#eee7eb;color:#7a7077}
+.rubric{background:#fbfaf9;border:1px solid #eee7eb;border-radius:16px;padding:6px;gap:6px}
+.scorebtn{border-color:transparent;background:transparent;border-radius:12px;min-height:50px;color:#6b6269}
+.scorebtn:hover{background:#fff;border-color:#e7c2cb;transform:none}
+.scorebtn.on{background:#251b21;border-color:#251b21;color:#fff;box-shadow:0 10px 22px rgba(37,27,33,.18)}
+.scorebtn.on small{color:#f5d7df}
+.chip{background:#fff;border-color:#e8e1e5;color:#675d64}
+.chip:hover{border-color:#dcb7c1;background:#fffafa}
+.chip.on{background:#fff1f4;border-color:var(--pink);color:var(--pink2)}
+.chip.green.on{background:#eefaf5;border-color:var(--green);color:#0f7653}
+.chip.red.on{background:#fff1f1;border-color:var(--red);color:#b42323}
+.auto-score{background:#f7fbff;border-color:#cfe7ff;color:#145c9e}
+.script-card{border-color:#eee0e5;border-radius:22px;background:#fff}
+.script-head{background:#fbf4f6;border-bottom-color:#eee0e5}
+.script-title{color:#30262c}.script-line{color:#625861;border-left-color:#e7a0af}
+.mode-row{background:rgba(248,246,244,.86);border-bottom:1px solid rgba(232,225,229,.62)}
+.mode-chip{border-color:#e8e1e5;background:#fff;color:#675d64}
+.mode-chip.on{background:#251b21;border-color:#251b21;color:#fff}
+.tabs{background:#fbfaf9;border:1px solid #eee7eb;border-radius:16px;padding:5px;margin-top:16px}
+.tab{border-color:transparent;background:transparent;border-radius:12px}
+.tab.on{background:#251b21;border-color:#251b21;color:#fff}
+.output{background:#fff;border-color:#e8e1e5;border-radius:18px}
+.btn{border-color:#e8e1e5;background:#fff;color:#514850;border-radius:14px}
+.btn.primary{background:#251b21;border-color:#251b21;color:#fff}
+.btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(42,28,36,.08)}
+@media(min-width:1050px){
+  .top{grid-template-columns:minmax(0,1fr) minmax(405px,430px);align-items:start}
+  .panel.sticky{top:66px}
+  .card:not(.role-brief),.script-card,#questions .card{max-width:820px}
+  .section{max-width:820px}
+  .mode-row{max-width:820px}
+}
+@media(max-width:850px){h1{font-size:27px}.hero{padding:22px}.card{padding:16px}}
+
+
+/* Timeline interactivity fix */
+.scroll-anchor{height:1px;scroll-margin-top:92px}
+.flow-step{appearance:none;font-family:inherit;cursor:pointer}
+.flow-step.active{background:#251b21;color:#fff;border-color:#251b21;box-shadow:0 10px 24px rgba(37,27,33,.16)}
+.flow-step.active b{color:#fff}
+.flow-step:focus-visible{outline:3px solid rgba(232,82,110,.28);outline-offset:2px}
+
+/* v12 content cleanup and design QA */
+.hero{min-height:auto;padding:24px 28px}
+.hero .sub{display:none}
+.top{align-items:start}
+.operational-q{background:linear-gradient(180deg,#fff,#fffcfd)}
+.operational-q .intent{border-left-color:#d9c7ce;background:#faf7f8}
+.operational-q .note{min-height:58px}
+.logistics-guide .guide-head{background:#fff;color:#3a3036}
+.original-options{margin-top:6px}
+.script-line strong{font-weight:900;color:#3a3036}
+@media(min-width:1050px){.hero{min-height:auto}}
+
+
+/* Candidate clarification helper */
+.rephrase-guide{border-color:#eadfe4;background:#fff}
+.rephrase-guide .guide-head{background:#fbf7f8}
+.rephrase-guide .guide-head span:first-child{color:#7a4b58;font-weight:900}
+.rephrase-card{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.rephrase-item{border:1px solid #efe1e6;border-radius:14px;background:#fff;padding:12px}
+.rephrase-item h4{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#b45b70;margin-bottom:6px}
+.rephrase-item p{font-size:13px;line-height:1.65;color:#5f5158}
+@media(max-width:760px){.rephrase-card{grid-template-columns:1fr}}
+
+
+/* v15 role selector polish — clearer full-width applied role control */
+.panel .role-field{grid-column:1 / -1}
+.panel .role-field select{
+  min-height:48px;
+  padding:0 46px 0 15px;
+  border-radius:18px;
+  font-weight:800;
+  font-size:14px;
+  letter-spacing:-.01em;
+  color:#251b21;
+  background:
+    linear-gradient(180deg,#fff,#fffafa);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9), 0 6px 18px rgba(42,28,36,.04);
+  text-overflow:ellipsis;
+}
+.panel .role-field select:hover{border-color:#dcb7c1}
+.panel .role-field label{color:#8d8189}
+
+/* v34 role dropdown arrow polish — avoid native arrow touching the edge */
+.panel .role-field select{
+  -webkit-appearance:none;
+  appearance:none;
+  padding-right:58px;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M6 8l4 4 4-4' stroke='%238a7d85' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
+    linear-gradient(180deg,#fff,#fffafa);
+  background-repeat:no-repeat,no-repeat;
+  background-position:right 20px center,0 0;
+  background-size:18px 18px,100% 100%;
+}
+.panel .role-field select:focus{
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M6 8l4 4 4-4' stroke='%23d94162' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
+    linear-gradient(180deg,#fff,#fffafa);
+}
+
+@media(min-width:1050px){
+  .panel .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+}
+
+
+
+/* v16 visual refinement — cleaner upper layout, role snapshot, and display mode */
+@media(min-width:1050px){
+  .top{grid-template-columns:minmax(0,1fr) minmax(420px,440px);gap:20px;margin-bottom:22px}
+  .card:not(.role-brief),.script-card,#questions .card,.section,.mode-row{max-width:860px}
+}
+.hero{
+  min-height:148px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:30px 34px;
+  background:
+    radial-gradient(circle at 94% 18%, rgba(217,65,98,.10), transparent 25%),
+    linear-gradient(135deg,#ffffff 0%,#fffaf8 100%);
+}
+.hero:after{display:none}
+.kicker{margin-bottom:10px}
+h1{font-size:34px;max-width:720px}
+.section{margin:20px 0 12px}
+.section span{letter-spacing:.16em;color:#7f747b}
+.section:after{background:linear-gradient(90deg,#e8e1e5,transparent)}
+.script-card{max-width:860px;background:#fff;border-color:#eadfe4}
+.script-head{padding:16px 18px;background:linear-gradient(135deg,#fff8fa,#fff)}
+.script-title{font-size:14px}
+.script-sub{font-size:12px}
+.role-section{margin-top:22px}
+.role-snapshot{
+  max-width:860px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:12px;
+  padding:12px;
+  background:linear-gradient(135deg,#fff,#fbfaf9);
+  border-color:#ebe3e7;
+  box-shadow:0 14px 38px rgba(42,28,36,.06);
+}
+.role-snapshot:before{display:none}
+.briefbox{
+  position:relative;
+  padding:18px 18px 18px 20px;
+  background:#fff;
+  border:1px solid #eee7eb;
+  border-radius:18px;
+  min-height:150px;
+  overflow:hidden;
+}
+.briefbox:before{
+  content:'';
+  position:absolute;
+  inset:0 auto 0 0;
+  width:4px;
+  background:linear-gradient(180deg,var(--pink),rgba(217,65,98,.22));
+  border-radius:999px;
+}
+.brief-signals:before{background:linear-gradient(180deg,var(--green),rgba(20,143,101,.20))}
+.brief-kicker{
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#a2949d;
+  margin-bottom:4px;
+}
+.briefbox h3{
+  color:#231b20;
+  font-size:15px;
+  letter-spacing:-.02em;
+  margin-bottom:10px;
+}
+.briefbox ul{
+  padding-left:0;
+  list-style:none;
+  color:#615860;
+  font-size:13px;
+  line-height:1.52;
+}
+.briefbox li{
+  position:relative;
+  padding-left:18px;
+  margin:7px 0;
+}
+.briefbox li:before{
+  content:'•';
+  position:absolute;
+  left:0;
+  top:0;
+  color:var(--pink);
+  font-weight:900;
+}
+.brief-signals li:before{color:var(--green)}
+.refined-mode-row{
+  max-width:860px;
+  position:sticky;
+  top:54px;
+  z-index:22;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px;
+  margin:16px 0 22px;
+  background:rgba(255,255,255,.82);
+  border:1px solid rgba(232,225,229,.88);
+  border-radius:18px;
+  backdrop-filter:blur(16px);
+  box-shadow:0 10px 30px rgba(42,28,36,.05);
+}
+.mode-label{
+  margin:0 6px 0 4px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#92868e;
+  white-space:nowrap;
+}
+.refined-mode-row .mode-chip{
+  padding:9px 14px;
+  border-radius:13px;
+  box-shadow:none;
+  font-size:12px;
+}
+.refined-mode-row .mode-chip.on{
+  background:#251b21;
+  border-color:#251b21;
+  color:#fff;
+}
+@media(max-width:850px){
+  .hero{padding:24px 22px;min-height:auto}
+  h1{font-size:29px}
+  .role-snapshot{grid-template-columns:1fr;padding:10px}
+  .briefbox{min-height:auto}
+  .refined-mode-row{position:relative;top:auto;margin:14px 0 18px;overflow-x:auto}
+  .mode-label{display:none}
+}
+
+
+
+/* v17 top-scroll refinement — prevents display mode from floating over question cards */
+.flow-timeline{
+  position:sticky!important;
+  top:0!important;
+  z-index:60!important;
+  margin:-22px -22px 24px!important;
+  padding:12px 22px!important;
+  background:rgba(255,255,255,.96)!important;
+  border-bottom:1px solid rgba(232,225,229,.9)!important;
+  box-shadow:0 10px 30px rgba(42,28,36,.06)!important;
+  backdrop-filter:blur(18px)!important;
+}
+.flow-track{
+  max-width:1180px!important;
+  margin:0 auto!important;
+  display:grid!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+.flow-step{
+  min-height:38px!important;
+  border-radius:999px!important;
+  background:#fff!important;
+  border:1px solid #e9e2e6!important;
+  color:#675d64!important;
+  box-shadow:0 5px 16px rgba(42,28,36,.04)!important;
+  transition:background .18s ease,color .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease!important;
+}
+.flow-step:hover{
+  border-color:#d9bcc5!important;
+  color:#251b21!important;
+  transform:translateY(-1px)!important;
+}
+.flow-step.active{
+  background:#251b21!important;
+  border-color:#251b21!important;
+  color:#fff!important;
+  box-shadow:0 10px 24px rgba(37,27,33,.18)!important;
+}
+.flow-step.active b{color:#fff!important}
+.scroll-anchor{scroll-margin-top:92px!important}
+
+/* Display mode should behave like a normal control, not a second sticky bar */
+.mode-row,
+.refined-mode-row{
+  position:relative!important;
+  top:auto!important;
+  z-index:1!important;
+  max-width:860px!important;
+  width:max-content!important;
+  max-width:min(860px,100%)!important;
+  margin:16px 0 26px!important;
+  padding:6px!important;
+  border-radius:999px!important;
+  background:#fff!important;
+  border:1px solid #ebe3e7!important;
+  box-shadow:0 8px 22px rgba(42,28,36,.045)!important;
+  backdrop-filter:none!important;
+}
+.refined-mode-row .mode-label{
+  padding:0 8px 0 10px!important;
+  color:#8d8189!important;
+}
+.refined-mode-row .mode-chip{
+  border-radius:999px!important;
+  padding:9px 16px!important;
+}
+
+/* keep question cards away from the top bar and improve scanned spacing */
+#core.card,#questions .card,.script-card,.role-snapshot,.output.card{
+  box-shadow:0 14px 36px rgba(42,28,36,.055)!important;
+}
+.q:first-child{margin-top:0!important}
+.card{scroll-margin-top:96px!important}
+
+@media(max-width:850px){
+  .flow-timeline{margin:-14px -14px 18px!important;padding:10px 14px!important}
+  .flow-track{display:flex!important;overflow-x:auto!important;gap:8px!important;scrollbar-width:none!important}
+  .flow-track::-webkit-scrollbar{display:none!important}
+  .flow-step{min-width:128px!important;flex:0 0 auto!important}
+  .mode-row,.refined-mode-row{width:100%!important;border-radius:18px!important;overflow-x:auto!important}
+}
+
+
+
+/* v18 clarification layout fix — keep rephrase helper full-width and readable */
+.rephrase-guide.open .guide-body{
+  display:block!important;
+  padding:14px!important;
+}
+.rephrase-guide .rephrase-card{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  gap:14px!important;
+  width:100%!important;
+}
+.rephrase-guide .rephrase-item{
+  min-width:0;
+  padding:16px 18px!important;
+  border-radius:16px!important;
+  background:#fff!important;
+}
+.rephrase-guide .rephrase-item h4{
+  font-size:10.5px!important;
+  line-height:1.25!important;
+  margin-bottom:8px!important;
+}
+.rephrase-guide .rephrase-item p{
+  font-size:13.5px!important;
+  line-height:1.7!important;
+  margin:0!important;
+  overflow-wrap:break-word;
+}
+@media(max-width:760px){
+  .rephrase-guide .rephrase-card{grid-template-columns:1fr!important;}
+}
+
+
+
+.q.tracker-focus{outline:3px solid rgba(232,82,110,.22);box-shadow:0 0 0 6px rgba(232,82,110,.08),0 14px 36px rgba(150,50,75,.10)!important}
+/* v19 right-side interview tracker — uses the empty right rail while scrolling */
+.question-tracker{
+  display:none;
+}
+@media(min-width:1180px){
+  .question-tracker{
+    display:block;
+    position:fixed;
+    top:104px;
+    right:max(18px,calc((100vw - 1240px)/2 + 18px));
+    width:300px;
+    max-height:calc(100vh - 128px);
+    overflow:auto;
+    background:rgba(255,255,255,.96);
+    border:1px solid #ead9df;
+    border-radius:24px;
+    box-shadow:0 18px 45px rgba(80,40,54,.11);
+    backdrop-filter:blur(18px);
+    padding:16px;
+    opacity:0;
+    transform:translateY(8px);
+    pointer-events:none;
+    transition:opacity .18s ease,transform .18s ease;
+    z-index:18;
+  }
+  body.show-tracker .question-tracker{opacity:1;transform:translateY(0);pointer-events:auto}
+  .tracker-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+  .tracker-kicker{font-size:9.5px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--pink);white-space:nowrap}
+  .tracker-title{font-size:15px;font-weight:900;letter-spacing:-.02em;margin-top:3px;color:var(--ink);line-height:1.15}
+  .tracker-count{font-family:'DM Mono',monospace;font-size:12px;font-weight:900;color:var(--pink2);background:var(--rose);border:1px solid #f3c4cf;border-radius:999px;padding:6px 9px;white-space:nowrap;line-height:1}
+  .tracker-progress{height:6px;background:#fff4f6;border:1px solid #f6d8df;border-radius:999px;overflow:hidden;margin:10px 0 14px}
+  .tracker-progress span{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--pink),var(--pink2));border-radius:999px;transition:width .2s ease}
+  .tracker-group{margin-top:14px}
+  .tracker-group-title{font-size:10.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin:0 0 8px}
+  .tracker-item{width:100%;display:grid;grid-template-columns:22px minmax(0,1fr);align-items:start;gap:10px;border:1px solid #f0dce2;background:#fff;border-radius:15px;padding:10px 11px;margin-bottom:8px;text-align:left;cursor:pointer;color:var(--muted);transition:.14s;min-height:48px}
+  .tracker-item:hover{border-color:#efb2bf;transform:translateY(-1px);box-shadow:0 8px 18px rgba(160,70,95,.07)}
+  .tracker-item.done{border-color:#bbf7d0;background:#f0fdf4;color:#166534}
+  .tracker-item.partial{border-color:#fde68a;background:#fffbeb;color:#92400e}
+  .tracker-dot{width:22px;height:22px;min-width:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:900;background:#fff7f9;border:1px solid #f2c9d2;color:var(--pink2);line-height:1}
+  .tracker-item.done .tracker-dot{background:#dcfce7;border-color:#86efac;color:#166534}
+  .tracker-item.partial .tracker-dot{background:#fef3c7;border-color:#fcd34d;color:#92400e}
+  .tracker-copy{display:block;min-width:0;max-width:100%;line-height:1.2}
+  .tracker-name{display:block;font-size:12px;font-weight:850;line-height:1.25;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;color:inherit}
+  .tracker-meta{display:block;font-size:10.5px;line-height:1.25;color:inherit;opacity:.68;margin-top:4px;white-space:normal}
+  .tracker-note{font-size:11.5px;line-height:1.45;color:var(--soft);border-top:1px dashed #ecd5dd;margin-top:12px;padding-top:12px}
+}
+@media(min-width:1180px) and (max-width:1320px){
+  .question-tracker{
+    width:248px;
+    right:10px;
+    padding:16px 14px;
+    border-radius:22px;
+    max-height:calc(100vh - 140px);
+  }
+  .tracker-head{gap:10px;margin-bottom:12px}
+  .tracker-title{font-size:14px;line-height:1.18}
+  .tracker-count{font-size:11px;padding:6px 8px}
+  .tracker-progress{margin:12px 0 16px}
+  .tracker-group{margin-top:16px}
+  .tracker-group-title{margin-bottom:10px;line-height:1.25}
+  .tracker-item{
+    grid-template-columns:20px minmax(0,1fr);
+    padding:11px 10px;
+    gap:10px;
+    border-radius:16px;
+    margin-bottom:10px;
+    min-height:54px;
+  }
+  .tracker-dot{width:20px;height:20px;min-width:20px;font-size:10px}
+  .tracker-name{font-size:11.5px;line-height:1.28}
+  .tracker-meta{font-size:10.25px;line-height:1.3;margin-top:5px}
+}
+@media(min-width:1180px) and (max-width:1245px){
+  .question-tracker{display:none}
+  body.show-tracker .question-tracker{opacity:0;pointer-events:none}
+}
+
+
+/* v22 tracker spacing refinement — more breathing room between main interview cards and the right checklist */
+@media(min-width:1180px){
+  .question-tracker{
+    right:14px;
+  }
+}
+@media(min-width:1180px) and (max-width:1320px){
+  .question-tracker{
+    width:224px;
+    right:8px;
+    padding:17px 14px;
+  }
+  .tracker-item{
+    padding:12px 10px;
+    gap:9px;
+    margin-bottom:12px;
+  }
+  .tracker-name{font-size:11.25px}
+  .tracker-meta{font-size:10px}
+}
+@media(min-width:1321px){
+  .question-tracker{
+    width:292px;
+  }
+}
+
+
+
+
+/* v25 responsive tracker controls — collapsible checklist for zoomed or narrow layouts */
+@media(min-width:1180px){
+  .tracker-actions{display:flex;align-items:center;gap:8px;flex:none}
+  .tracker-close{
+    width:30px;height:30px;border-radius:999px;border:1px solid #ead9df;background:#fff;
+    color:var(--muted);font-weight:900;cursor:pointer;display:grid;place-items:center;line-height:1;
+    transition:.14s;box-shadow:0 4px 12px rgba(100,40,60,.04)
+  }
+  .tracker-close:hover{border-color:var(--pink);color:var(--pink2);background:var(--rose)}
+  .tracker-mini{
+    display:none;width:100%;border:0;background:linear-gradient(135deg,var(--pink2),var(--pink));
+    color:#fff;border-radius:999px;padding:11px 14px;font-size:12px;font-weight:900;
+    letter-spacing:.01em;box-shadow:0 14px 32px rgba(190,45,78,.18);cursor:pointer;white-space:nowrap;
+    align-items:center;justify-content:center;gap:7px
+  }
+  .tracker-mini small{font-family:'DM Mono',monospace;font-size:11px;font-weight:900;opacity:.9}
+  body.tracker-collapsed.show-tracker .question-tracker{
+    width:auto;min-width:138px;max-width:170px;max-height:none;overflow:visible;padding:0;border:0;background:transparent;
+    box-shadow:none;backdrop-filter:none;right:18px;top:112px;border-radius:999px
+  }
+  body.tracker-collapsed .question-tracker .tracker-head,
+  body.tracker-collapsed .question-tracker .tracker-progress,
+  body.tracker-collapsed .question-tracker #trackerList,
+  body.tracker-collapsed .question-tracker .tracker-note{display:none!important}
+  body.tracker-collapsed .question-tracker .tracker-mini{display:flex}
+  body.tracker-collapsed .question-tracker:hover .tracker-mini{transform:translateY(-1px)}
+}
+
+@media(min-width:1180px) and (max-width:1380px){
+  .question-tracker{right:18px!important;width:260px!important}
+}
+@media(min-width:1180px) and (max-width:1280px){
+  body:not(.tracker-collapsed) .question-tracker{display:none!important}
+  body.show-tracker .question-tracker{display:block!important;opacity:1!important;pointer-events:auto!important}
+  body.show-tracker .question-tracker .tracker-head,
+  body.show-tracker .question-tracker .tracker-progress,
+  body.show-tracker .question-tracker #trackerList,
+  body.show-tracker .question-tracker .tracker-note{display:none!important}
+  body.show-tracker .question-tracker .tracker-mini{display:flex!important}
+  body.show-tracker .question-tracker{width:auto!important;min-width:138px;max-width:170px;max-height:none;overflow:visible;padding:0;border:0;background:transparent;box-shadow:none;backdrop-filter:none;right:18px!important;top:112px;border-radius:999px}
+}
+
+/* v25 Q&A bank containment — prevent wide response cards from sitting under the tracker at high zoom */
+.qa-bank-card{max-width:100%;contain:layout paint;}
+.qa-bank-body{overflow-x:hidden;}
+.qa-answer p{overflow-wrap:anywhere;}
+@media(min-width:1180px) and (max-width:1380px){
+  .qa-grid{grid-template-columns:1fr!important;}
+}
+
+/* v24 Candidate Q&A response bank */
+.qa-bank-card{background:linear-gradient(135deg,#fff,#fff9fa);border:1.5px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin:0 0 14px}
+.qa-bank-head{display:flex;align-items:center;gap:12px;padding:16px 18px;background:#fff;border-bottom:1px solid var(--line);cursor:pointer;user-select:none}
+.qa-bank-icon{width:30px;height:30px;border-radius:12px;background:var(--rose);border:1px solid #f4b5c1;color:var(--pink2);display:grid;place-items:center;font-weight:900;flex:none}
+.qa-bank-title{font-size:14px;font-weight:900;color:var(--ink);letter-spacing:-.01em}
+.qa-bank-sub{font-size:11.5px;color:var(--soft);margin-top:2px;line-height:1.35}
+.qa-bank-action{margin-left:auto;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:11.5px;font-weight:900;color:var(--muted);white-space:nowrap}
+.qa-bank-head:hover .qa-bank-action{border-color:var(--pink);color:var(--pink2);background:var(--rose)}
+.qa-bank-body{max-height:0;overflow:hidden;transition:max-height .38s ease,padding .28s ease;padding:0 18px}
+.qa-bank-body.open{max-height:3600px;padding:18px}
+.qa-source-note{font-size:12.5px;line-height:1.55;color:var(--muted);background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:11px 13px;margin-bottom:12px}
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.qa-item{border:1px solid var(--line);border-radius:18px;background:#fff;padding:14px;box-shadow:0 6px 20px rgba(120,60,80,.04)}
+.qa-item.important{border-color:#f2b5c1;background:linear-gradient(135deg,#fff5f7,#fff)}
+.qa-item h3{font-size:13.5px;line-height:1.35;margin-bottom:10px;color:var(--pink2);letter-spacing:-.01em}
+.qa-lang{display:grid;grid-template-columns:1fr;gap:8px}
+.qa-answer{border:1px solid #f0dce2;border-radius:14px;background:#fff;padding:11px 12px}
+.qa-answer b{display:inline-flex;font-size:10.5px;text-transform:uppercase;letter-spacing:.11em;color:var(--pink);margin-bottom:5px}
+.qa-answer p{font-size:12.7px;line-height:1.65;color:var(--muted);margin:0}
+.qa-mini{margin-top:12px;border-top:1px dashed var(--line);padding-top:12px}
+.qa-mini h4{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin-bottom:8px}
+.qa-mini ul{padding-left:18px;color:var(--muted);font-size:12.5px;line-height:1.65}
+.qa-safe{font-size:11.5px;color:#8a5f12;background:#fffbeb;border:1px solid #fde68a;border-radius:999px;padding:6px 10px;display:inline-flex;margin-top:10px;font-weight:800}
+@media(max-width:900px){.qa-grid{grid-template-columns:1fr}.qa-bank-head{align-items:flex-start}.qa-bank-action{display:none}}
+
+
+
+/* v26 Q&A response bank refinement: compact accordion list to avoid wide protruding cards */
+.qa-bank-card{max-width:100%;overflow:hidden;position:relative;z-index:1;}
+.qa-bank-body{overflow:hidden;}
+.qa-bank-body.open{max-height:none;padding:16px 18px 18px;}
+.qa-source-note{margin-bottom:14px;}
+.qa-grid{display:flex!important;flex-direction:column!important;gap:10px!important;max-width:100%;}
+.qa-item{padding:0!important;border-radius:16px!important;overflow:hidden;background:#fff;box-shadow:0 4px 16px rgba(80,35,55,.035)!important;}
+.qa-item h3{margin:0!important;padding:14px 46px 14px 16px!important;position:relative;cursor:pointer;color:var(--ink)!important;font-size:13.2px!important;line-height:1.4!important;background:linear-gradient(135deg,#fff,#fff8fa);border-bottom:1px solid transparent;}
+.qa-item h3::after{content:'Open';position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 8px;}
+.qa-item.open h3{border-bottom-color:var(--line);color:var(--pink2)!important;}
+.qa-item.open h3::after{content:'Close';color:var(--pink2);border-color:#f3b7c3;background:var(--rose);}
+.qa-item .qa-lang,.qa-item .qa-safe{display:none!important;}
+.qa-item.open .qa-lang{display:grid!important;grid-template-columns:1fr 1fr;gap:10px;padding:14px;}
+.qa-item.open .qa-safe{display:inline-flex!important;margin:0 14px 14px;}
+.qa-answer{min-width:0;}
+.qa-answer p{overflow-wrap:break-word;word-break:normal;}
+.qa-mini{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-top:14px;}
+@media(max-width:1120px){.qa-item.open .qa-lang{grid-template-columns:1fr!important}.qa-bank-body.open{padding:14px}.qa-bank-card{border-radius:16px}}
+@media(max-width:760px){.qa-bank-head{padding:14px}.qa-bank-title{font-size:13.2px}.qa-bank-sub{font-size:11px}.qa-item h3{padding-right:14px!important}.qa-item h3::after{position:static;transform:none;display:inline-flex;margin-left:8px;vertical-align:middle}.qa-answer p{font-size:12.3px}}
+
+
+
+/* v27 Q&A bank width alignment — keep Candidate Q&A visually aligned with flow script cards */
+#candidateQaBank.qa-bank-card{
+  max-width:860px!important;
+  width:100%!important;
+  margin:0 0 14px!important;
+  border-radius:22px!important;
+}
+#candidateQaBank .qa-bank-body.open{
+  padding:16px 18px 18px!important;
+}
+@media(min-width:1180px){
+  #candidateQaBank.qa-bank-card{
+    max-width:860px!important;
+  }
+}
+@media(max-width:900px){
+  #candidateQaBank.qa-bank-card{
+    max-width:100%!important;
+    border-radius:18px!important;
+  }
+}
+
+
+/* v29 bilingual question translation toggle */
+.vi-toggle-row{margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.vi-toggle{border:1.5px solid #ead7de;background:#fff;border-radius:999px;padding:7px 12px;font-size:11px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#8a5364;cursor:pointer;box-shadow:0 4px 12px rgba(120,50,70,.04);transition:all .16s ease}
+.vi-toggle:hover{border-color:#e8526e;color:#c0344f;background:#fff7f9}
+.vi-toggle.on{background:#2a2026;color:#fff;border-color:#2a2026}
+.vi-question{display:none;margin-top:9px;border:1.5px solid #ead7de;border-radius:16px;background:linear-gradient(135deg,#fff,#fff7f9);padding:12px 14px;color:#604a52;line-height:1.65;font-size:13.5px}
+.vi-question.open{display:block}
+.vi-question b{display:block;margin-bottom:3px;color:#c0344f;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+/* v30 — even Vietnamese translation layout: keep all translation blocks aligned and full-width */
+.qhead .qbody{flex:1;min-width:0}
+.vi-block{margin-left:42px;margin-top:8px;width:calc(100% - 42px)}
+.vi-block .vi-toggle-row{margin-top:0}
+.vi-block .vi-question{width:100%;max-width:none}
+@media(max-width:640px){.vi-block{margin-left:0;width:100%}}
+
+</style>
+</head>
+<body>
+<div class="copy-toast" id="copyToast" role="status" aria-live="polite">Copied to clipboard</div>
+
+<div class="flow-timeline" aria-label="Interview timeline">
+  <div class="flow-track">
+    <button type="button" class="flow-step active" data-target="sec-intro"><b>01</b> Intro</button>
+    <button type="button" class="flow-step" data-target="sec-logistics"><b>02</b> Logistics</button>
+    <button type="button" class="flow-step" data-target="sec-behavioural"><b>03</b> Behavioural</button>
+    <button type="button" class="flow-step" data-target="sec-rolefit"><b>04</b> Role Fit</button>
+    <button type="button" class="flow-step" data-target="sec-qa"><b>05</b> Q&amp;A</button>
+    <button type="button" class="flow-step" data-target="sec-summary"><b>06</b> Summary</button>
+  </div>
+</div>
+
+
+<aside class="question-tracker" id="questionTracker" aria-label="Question completion tracker">
+  <button type="button" class="tracker-mini" onclick="toggleQuestionTracker(false)">Checklist <small id="trackerMiniCount">0/0</small></button>
+  <div class="tracker-head">
+    <div>
+      <div class="tracker-kicker">Interview tracker</div>
+      <div class="tracker-title">Question checklist</div>
+    </div>
+    <div class="tracker-actions">
+      <div class="tracker-count" id="trackerCount">0/0</div>
+      <button type="button" class="tracker-close" onclick="toggleQuestionTracker(true)" aria-label="Collapse question checklist">‹</button>
+    </div>
+  </div>
+  <div class="tracker-progress"><span id="trackerProgress"></span></div>
+  <div id="trackerList"></div>
+  <div class="tracker-note">Click any item to jump back to that question. Green means completed; amber means partially noted.</div>
+</aside>
+
+<div class="top">
+  <div class="hero">
+    <div class="kicker">TRG International · Interview Scorecard</div>
+    <h1>Interview Command Centre</h1>
+  </div>
+  <div class="panel sticky">
+    <div class="grid">
+      <div class="field"><label>Candidate</label><input id="name" placeholder="Candidate name"></div>
+      <div class="field"><label>Date</label><input id="date" type="date"></div>
+      <div class="field"><label>Interviewer</label><input id="interviewer" placeholder="Khoa"></div>
+      <div class="field role-field"><label>Applied Role</label><select id="role"></select></div>
+    </div>
+    <div class="scorebar">
+      <div class="metric"><b id="avg">0.0</b><span>Average</span></div>
+      <div class="metric"><b id="answered">0</b><span>Scored</span></div>
+      <div class="metric"><b id="risk">0</b><span>Flags</span></div>
+      <div class="metric"><b id="fit">—</b><span>Fit</span></div>
+      <div class="metric"><b id="engm">—</b><span>English</span></div>
+    </div>
+    <div class="verdict"><span id="verdict">Start scoring to get recommendation</span><span id="vemoji">📋</span></div>
+    <div class="warn" id="warn"></div>
+  </div>
+</div>
+
+
+<div id="sec-intro" class="scroll-anchor"></div>
+<div class="section"><span>Interview Flow Scripts</span></div>
+<div class="script-card">
+  <div class="script-head" onclick="toggleScript(this)">
+    <div class="script-dot"></div>
+    <div><div class="script-title">Opening Script</div><div class="script-sub">~1 min · Use before starting the English interview</div></div>
+    <div class="script-arrow">▼</div>
+  </div>
+  <div class="script-body">
+    <div class="script-line">"Welcome, and thank you for coming in today. My name is Khoa, <span id="ms-text">and with me is Ms. Dung from our HR team at TRG International.</span> Great to have you here."</div>
+    <div class="script-line">"Today's interview has two parts. We'll start with an English interview — English is our main working language at TRG, so this helps us understand how you communicate in that setting. After that, we'll move to a Q&amp;A session where you can ask us anything. Vietnamese is fine for that part."</div>
+    <div class="script-line">"Take your time and just be yourself. Ready to start?"</div>
+    <button class="ms-toggle" id="ms-btn" onclick="event.stopPropagation();toggleMS()">👤 Ms. Dung present</button>
+  </div>
+</div>
+
+<div class="section role-section"><span>Role Snapshot</span></div>
+<div class="card role-brief role-snapshot">
+  <div class="briefbox brief-focus"><div class="brief-kicker">Current role focus</div><h3>Role focus</h3><ul id="focus"></ul></div>
+  <div class="briefbox brief-signals"><div class="brief-kicker">What to look for</div><h3>Strong candidate signals</h3><ul id="signals"></ul></div>
+</div>
+
+
+<div id="sec-logistics" class="scroll-anchor"></div>
+<div class="section"><span>Core Logistics & English</span></div>
+<div class="card" id="core"></div>
+
+
+<div id="sec-behavioural" class="scroll-anchor"></div>
+<div class="script-card">
+  <div class="script-head" onclick="toggleScript(this)">
+    <div class="script-dot" style="background:var(--amber);box-shadow:0 0 0 4px rgba(217,119,6,.12)"></div>
+    <div><div class="script-title" style="color:var(--amber)">Transition — Moving to Behavioural Questions</div><div class="script-sub">~15 sec · Use after logistics and English check</div></div>
+    <div class="script-arrow">▼</div>
+  </div>
+  <div class="script-body">
+    <div class="script-line">"Great, that covers the logistics side. Now I'd like to move to the second part — we'll have a more open conversation to get to know you a bit better. These are behavioural questions, so there's no right or wrong answer. Just be honest and walk me through your thinking."</div>
+    <div class="script-line">"Take your time with each question — it's completely fine to pause and think before answering."</div>
+  </div>
+</div>
+
+<div id="sec-rolefit" class="scroll-anchor"></div>
+<div class="section"><span>Role-Based Behavioural Questions</span></div>
+<div id="questions"></div>
+
+
+<div id="sec-qa" class="scroll-anchor"></div>
+<div class="script-card">
+  <div class="script-head" onclick="toggleScript(this)">
+    <div class="script-dot" style="background:var(--green);box-shadow:0 0 0 4px rgba(16,163,111,.12)"></div>
+    <div><div class="script-title" style="color:var(--green)">Transition — Q&amp;A & Wrap-Up</div><div class="script-sub">~30 sec · Use after behavioural questions</div></div>
+    <div class="script-arrow">▼</div>
+  </div>
+  <div class="script-body">
+    <div class="script-line">"That's it from our side — you've done really well. Now let's flip it around. This is your time — do you have any questions for us? About the role, the team, or anything about TRG in general? Feel free to ask in Vietnamese if that's easier."</div>
+    <div class="script-line">"Take your time — no rush at all."</div>
+  </div>
+</div>
+
+
+<div class="qa-bank-card" id="candidateQaBank">
+  <div class="qa-bank-head" onclick="toggleQaBank(this)">
+    <div class="qa-bank-icon">Q</div>
+    <div>
+      <div class="qa-bank-title">Candidate Q&amp;A Response Bank</div>
+      <div class="qa-bank-sub">Optional bilingual responses for common candidate questions. Open only when needed during Q&amp;A.</div>
+    </div>
+    <button type="button" class="qa-bank-action" onclick="event.stopPropagation();toggleQaBank(this.closest('.qa-bank-head'))">Open response bank</button>
+    <div class="script-arrow">▼</div>
+  </div>
+  <div class="qa-bank-body script-body">
+    <div class="qa-source-note"><strong>Use with discretion:</strong> Keep the tone warm and transparent. Do not promise salary conversion, guaranteed hiring, or benefits that are not confirmed for the specific internship. The responses below are phrased to stay positive while remaining realistic.</div>
+    <div class="qa-grid">
+      <div class="qa-item important">
+        <h3>If the candidate asks: “Since this internship is unpaid, what value or benefits would I receive instead?”</h3>
+        <div class="qa-lang">
+          <div class="qa-answer"><b>EN · UK</b><p>That is a very fair question. While this is an unpaid internship, the value we aim to provide is practical exposure rather than observation only. You would have the opportunity to work on real tasks, understand how a professional team operates, receive guidance from your supervisor, and build both soft and hard skills in an international working environment. TRG also places emphasis on learning, development, collaboration, training opportunities and access to learning resources, so I would describe this as a learning-focused internship rather than a compensation-based arrangement.</p></div>
+          <div class="qa-answer"><b>VI</b><p>Đây là một câu hỏi rất hợp lý. Dù kỳ thực tập này không có lương, giá trị mà bên mình muốn mang lại không chỉ là quan sát mà là trải nghiệm công việc thực tế. Bạn sẽ có cơ hội tham gia vào các đầu việc thật, hiểu cách một đội ngũ chuyên nghiệp vận hành, được supervisor hướng dẫn, đồng thời phát triển cả kỹ năng mềm lẫn kỹ năng chuyên môn trong môi trường làm việc quốc tế. TRG cũng chú trọng đến học hỏi, phát triển, kết nối, các hoạt động training và nguồn tài nguyên học tập, nên mình sẽ gọi đây là một kỳ thực tập thiên về trải nghiệm học hỏi và phát triển nghề nghiệp.</p></div>
+        </div>
+        <span class="qa-safe">Avoid saying: “This replaces salary” or “You will definitely get a job after.”</span>
+      </div>
+
+      <div class="qa-item important">
+        <h3>If the candidate asks: “Will someone guide or mentor me during the internship?”</h3>
+        <div class="qa-lang">
+          <div class="qa-answer"><b>EN · UK</b><p>Yes. You will not be left to figure everything out on your own. You will have a supervisor who guides you one-to-one, gives you context for your tasks, explains expectations and reviews your work when needed. At the same time, we still encourage interns to be proactive, ask questions and take ownership, because that is how you get the most out of the internship.</p></div>
+          <div class="qa-answer"><b>VI</b><p>Có. Bạn sẽ không phải tự xoay sở một mình. Bạn sẽ có supervisor hướng dẫn 1-on-1, giải thích bối cảnh công việc, làm rõ kỳ vọng và review công việc khi cần. Đồng thời, bên mình vẫn khuyến khích intern chủ động đặt câu hỏi, tự tìm hiểu và có tinh thần ownership, vì như vậy bạn sẽ học được nhiều nhất trong kỳ thực tập.</p></div>
+        </div>
+      </div>
+
+      <div class="qa-item important">
+        <h3>If the candidate asks: “Is there a chance to become a full-time employee after the internship?”</h3>
+        <div class="qa-lang">
+          <div class="qa-answer"><b>EN · UK</b><p>There can be opportunities, but I would not want to overpromise because it depends on several factors, including your work quality, consistency, attitude, role fit and the team’s hiring needs at that time. What I can say is that a strong internship is a good way to build trust with the team, show what you can contribute, and put yourself in a stronger position if a suitable opening becomes available.</p></div>
+          <div class="qa-answer"><b>VI</b><p>Cơ hội là có thể có, nhưng mình không muốn hứa trước vì điều này còn phụ thuộc vào nhiều yếu tố, bao gồm chất lượng công việc, sự ổn định, thái độ, mức độ phù hợp với vai trò và nhu cầu nhân sự của team tại thời điểm đó. Tuy nhiên, một kỳ thực tập tốt chắc chắn là cơ hội rất tốt để bạn xây dựng sự tin tưởng với team, thể hiện năng lực đóng góp và tạo lợi thế nếu sau này có vị trí phù hợp mở ra.</p></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <h3>If the candidate asks: “What kind of work will I actually do?”</h3>
+        <div class="qa-lang">
+          <div class="qa-answer"><b>EN · UK</b><p>The work will depend on the role and current team priorities, but the intention is for interns to contribute to real work, not just observe. For example, HR may involve recruitment coordination, onboarding support and engagement activities; Supply Chain may involve forecast, purchasing or stock-related support; and Graphic Design may involve social content, short-form visuals, photography or POSM design for PJ’s Coffee.</p></div>
+          <div class="qa-answer"><b>VI</b><p>Công việc cụ thể sẽ phụ thuộc vào vị trí và ưu tiên của team tại thời điểm đó, nhưng định hướng là intern sẽ được tham gia vào công việc thật, không chỉ ngồi quan sát. Ví dụ, HR có thể hỗ trợ recruitment, onboarding và engagement; Supply Chain có thể hỗ trợ forecast, purchasing hoặc stock-related tasks; còn Graphic Design có thể tham gia social content, short-form visuals, photography hoặc POSM cho PJ’s Coffee.</p></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <h3>If the candidate asks: “Will I receive training?”</h3>
+        <div class="qa-lang">
+          <div class="qa-answer"><b>EN · UK</b><p>You will receive guidance related to your work, and you will learn through hands-on tasks, feedback and exposure to the team’s working process. TRG also highlights a learning and development culture, including training, collaboration opportunities and access to learning resources. The most important thing is to come in with curiosity and a willingness to learn.</p></div>
+          <div class="qa-answer"><b>VI</b><p>Bạn sẽ được hướng dẫn liên quan đến công việc và sẽ học thông qua các task thực tế, feedback và việc quan sát cách team vận hành. TRG cũng nhấn mạnh văn hoá học hỏi và phát triển, bao gồm các cơ hội training, collaboration và nguồn tài nguyên học tập. Điều quan trọng nhất là bạn bước vào kỳ thực tập với sự tò mò và tinh thần sẵn sàng học hỏi.</p></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <h3>If the candidate asks: “Can I work from home or work hybrid?”</h3>
+        <div class="qa-lang">
+          <div class="qa-answer"><b>EN · UK</b><p>The working arrangement depends on the role, team needs and manager’s approval. Some roles may involve office-based work, hybrid arrangements or virtual work with permission from the manager. For this specific internship, we would confirm the practical arrangement clearly before the internship starts.</p></div>
+          <div class="qa-answer"><b>VI</b><p>Hình thức làm việc sẽ phụ thuộc vào vị trí, nhu cầu của team và sự đồng ý của manager. Một số vai trò có thể làm tại văn phòng, hybrid hoặc virtual nếu được manager cho phép. Với kỳ thực tập cụ thể này, bên mình sẽ xác nhận rõ cách làm việc thực tế trước khi bạn bắt đầu.</p></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <h3>If the candidate asks: “What happens after this interview?”</h3>
+        <div class="qa-lang">
+          <div class="qa-answer"><b>EN · UK</b><p>After this interview, we will share your profile and interview recap with the relevant team or supervisor for review. We will then get back to you by email within the stated timeline. If you are selected to proceed, the next step will be a Round 2 interview with the Hiring Manager.</p></div>
+          <div class="qa-answer"><b>VI</b><p>Sau buổi phỏng vấn này, bên mình sẽ gửi profile và phần recap buổi phỏng vấn của bạn cho team hoặc supervisor liên quan để review. Sau đó, bên mình sẽ phản hồi qua email trong timeline đã trao đổi. Nếu bạn được chọn đi tiếp, bước tiếp theo sẽ là vòng phỏng vấn Round 2 với Hiring Manager.</p></div>
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <h3>If the candidate asks: “What type of intern does TRG usually look for?”</h3>
+        <div class="qa-lang">
+          <div class="qa-answer"><b>EN · UK</b><p>We usually value candidates who are curious, proactive, reliable and willing to learn. Technical skills are helpful, but for an internship, attitude, ownership, communication and consistency are just as important. We also appreciate candidates who ask thoughtful questions and are open to feedback.</p></div>
+          <div class="qa-answer"><b>VI</b><p>Bên mình thường đánh giá cao những bạn tò mò, chủ động, đáng tin cậy và sẵn sàng học hỏi. Kỹ năng chuyên môn là một lợi thế, nhưng với internship thì thái độ, tinh thần ownership, giao tiếp và sự ổn định cũng quan trọng không kém. Bên mình cũng đánh giá cao những bạn biết đặt câu hỏi có suy nghĩ và cởi mở với feedback.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="qa-mini">
+      <h4>Other questions candidates may ask</h4>
+      <ul>
+        <li>What does a successful intern look like in this role?</li>
+        <li>How much English will I need to use day to day?</li>
+        <li>How often will I receive feedback from my supervisor?</li>
+        <li>Will I work mostly independently or with a team?</li>
+        <li>Are there any training, networking or internal activities for interns?</li>
+        <li>What should I prepare before starting if I am selected?</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="script-card">
+  <div class="script-head" onclick="toggleScript(this)">
+    <div class="script-dot"></div>
+    <div><div class="script-title">Closing Script — Next Steps</div><div class="script-sub">~1 min · Share before ending the session</div></div>
+    <div class="script-arrow">▼</div>
+  </div>
+  <div class="script-body">
+    <div class="script-line">"Thank you so much — that was a great conversation. Before we wrap up, I just want to walk you through what happens next so you know what to expect."</div>
+    <div class="script-line">"After this session, we'll share your profile and a recap of today's interview with the potential supervisor for the role. They'll review it on their end and share their feedback with us."</div>
+    <div class="script-line">"Based on the outcome of this round, we'll get back to you by email within <strong>2 to 3 working days</strong>. If you are selected to proceed, the next step will be a Round 2 interview with the Hiring Manager."</div>
+    <div class="script-line">"Is there anything else you'd like to clarify before we finish? — Wonderful. Thank you again for your time today, and we'll be in touch soon."</div>
+  </div>
+</div>
+
+<div id="sec-summary" class="scroll-anchor"></div>
+<div class="section"><span>Final Notes & Output</span></div>
+<div class="card">
+  <div class="grid">
+    <div class="field"><label>Overall standout note</label><textarea id="standout" placeholder="One sentence that best summarises this candidate..."></textarea></div>
+    <div class="field"><label>Additional reservation</label><textarea id="reservation" placeholder="Any concern worth recording..."></textarea></div>
+  </div>
+  <div class="field" style="margin-top:10px"><label>Decision</label>
+    <div class="chips" id="decision">
+      <button class="chip green" data-decision="Proceed to Round 2 with Hiring Manager">Proceed to Round 2 with Hiring Manager</button>
+      <button class="chip" data-decision="Hold — Compare with Pool">Hold — Compare with Pool</button>
+      <button class="chip red" data-decision="Not Proceeding">Not Proceeding</button>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="btn tab on" data-out="ats">ATS Note</button>
+    <button class="btn tab" data-out="hm">HM Note</button>
+  </div>
+  <div class="output" id="out">Click Generate after scoring.</div>
+  <div class="tools" style="margin-top:10px">
+    <button class="btn primary" onclick="generate()">⚡ Generate</button>
+    <button class="btn" id="copyBtn" onclick="copyOut(this)">Copy</button>
+    <button class="btn" onclick="resetAll()">Reset</button>
+  </div>
+</div>
+
+<script>
+
+let msDungPresent=true;
+function toggleScript(head){
+ const body=head.nextElementSibling;
+ const arrow=head.querySelector('.script-arrow');
+ body.classList.toggle('open');
+ if(arrow) arrow.classList.toggle('open');
+}
+
+function toggleQaBank(head){
+ const body=head.nextElementSibling;
+ const arrow=head.querySelector('.script-arrow');
+ const action=head.querySelector('.qa-bank-action');
+ if(!body) return;
+ const open=body.classList.toggle('open');
+ if(arrow) arrow.classList.toggle('open', open);
+ if(action) action.textContent = open ? 'Close response bank' : 'Open response bank';
+}
+function toggleMS(){
+ msDungPresent=!msDungPresent;
+ const txt=document.getElementById('ms-text');
+ const btn=document.getElementById('ms-btn');
+ if(msDungPresent){txt.classList.remove('ms-hidden');btn.classList.remove('on');btn.textContent='👤 Ms. Dung present'}
+ else{txt.classList.add('ms-hidden');btn.classList.add('on');btn.textContent='🙋 Solo interview'}
+}
+
+function setMode(compact){
+ document.body.classList.toggle('compact',compact);
+ const compactBtn=document.getElementById('compactMode');
+ const detailedBtn=document.getElementById('detailedMode');
+ if(compactBtn) compactBtn.classList.toggle('on',compact);
+ if(detailedBtn) detailedBtn.classList.toggle('on',!compact);
+}
+function initTimeline(){
+ const steps=[...document.querySelectorAll('.flow-step[data-target]')];
+ if(!steps.length) return;
+ const setActive=(active)=>{steps.forEach(s=>s.classList.toggle('active',s===active));};
+ steps.forEach(step=>{
+  step.addEventListener('click',()=>{
+   const target=document.getElementById(step.dataset.target);
+   if(target){target.scrollIntoView({behavior:'smooth',block:'start'});setActive(step);}
+  });
+ });
+ const update=()=>{
+  let current=steps[0];
+  let best=-Infinity;
+  const threshold=110;
+  steps.forEach(step=>{
+   const target=document.getElementById(step.dataset.target);
+   if(!target) return;
+   const top=target.getBoundingClientRect().top;
+   if(top<=threshold && top>best){best=top;current=step;}
+  });
+  if((window.innerHeight+window.scrollY)>=(document.documentElement.scrollHeight-8)){current=steps[steps.length-1];}
+  setActive(current);
+ };
+ window.addEventListener('scroll',update,{passive:true});
+ window.addEventListener('resize',update);
+ update();
+}
+
+
+const GUIDE={
+
+"TRG HR motivation":{
+ depth:"Assesses whether the candidate understands TRG's broader HR environment beyond a single-function internship.",
+ strong:["Connects interest to workforce management, recruitment, engagement or HR operations","Mentions curiosity about working with diverse teams and different HR touchpoints","Shows learning motivation rather than only needing an internship requirement","Understands that HR includes both people work and administrative discipline"],
+ green:["Genuine HR curiosity","Understands broad HR exposure","Learning-oriented mindset"],
+ weak:["Only says they need experience","No awareness of TRG or the HR function","Cannot explain why HR interests them"],
+ score:["1 = generic reason","3 = reasonable HR interest","5 = clear motivation linked to TRG, people operations and learning"]
+},
+"HR admin accuracy":{
+ depth:"Tests attention to detail, confidentiality and process discipline for HR records and documentation.",
+ strong:["Double-checks information before updating records","Uses trackers/checklists and version control where appropriate","Understands confidentiality around employee and candidate data","Asks for clarification instead of guessing when information is unclear"],
+ green:["Detail orientation","Confidentiality awareness","Documentation habit"],
+ weak:["Relies on memory","Downplays admin accuracy","No confidentiality awareness"],
+ score:["1 = careless or vague","3 = basic checking habits","5 = systematic, confidential and process-driven"]
+},
+"HR recruitment support":{
+ depth:"Internship-level recruitment support awareness expected; focus on coordination and professionalism.",
+ strong:["Screens CVs against role requirements","Supports interview scheduling with clear follow-up","Keeps recruitment trackers updated","Communicates professionally with candidates and recruiter"],
+ green:["Role-fit screening","Follow-up discipline","Tracker ownership"],
+ weak:["Screens based on subjective impressions only","No follow-up process","Does not mention tracker or documentation"],
+ score:["1 = no recruitment logic","3 = basic screening/scheduling","5 = structured, fair and well-documented recruitment support"]
+},
+"Internal events engagement":{
+ depth:"Looks for event coordination and employee engagement mindset, not full event-management expertise.",
+ strong:["Clarifies purpose, audience, timeline and logistics","Coordinates materials, communication and participant experience","Handles small issues calmly during execution","Reflects on how the activity supports connection or engagement"],
+ green:["People engagement awareness","Behind-the-scenes coordination","Proactive preparation"],
+ weak:["Only attends events passively","No planning or follow-up detail","Focuses on decoration only with no engagement purpose"],
+ score:["1 = passive involvement","3 = supports tasks","5 = plans, coordinates and understands engagement value"]
+},
+"HR compliance curiosity":{
+ depth:"Checks maturity around policies, labour-law exposure and knowing when to escalate.",
+ strong:["Understands that HR must follow policy and legal requirements","Does not give unverified advice independently","Researches carefully and checks with supervisor","Keeps employee information accurate and confidential"],
+ green:["Policy awareness","Escalation judgement","Careful research mindset"],
+ weak:["Guesses HR/legal answers","Treats compliance as unimportant","Shares sensitive information casually"],
+ score:["1 = risky judgement","3 = basic policy awareness","5 = careful, escalation-aware and professionally mature"]
+},
+"Hybrid collaboration":{
+ depth:"Evaluates adaptability for TRG's diverse, hybrid and international working environment.",
+ strong:["Uses clear written updates and confirms expectations","Works independently while asking timely questions","Adapts communication to different stakeholders or time zones","Takes ownership without waiting passively"],
+ green:["Hybrid-work readiness","Clear communication","Self-management"],
+ weak:["Needs constant supervision","Poor written communication","Waits silently when blocked"],
+ score:["1 = passive or unclear","3 = can work with guidance","5 = independent, communicative and adaptable"]
+},"Recruitment coordination":{
+ depth:"Internship-level coordination awareness expected — no deep HR expertise required.",
+ strong:["Confirms stakeholders and availability clearly","Uses tracker/calendar to avoid missed updates","Follows up professionally with candidates","Escalates conflicts early rather than waiting"],
+ green:["Mentions tracker, calendar invite, clear confirmation","Keeps HM/store manager and HR aligned","Has a calm follow-up process"],
+ weak:["Only says 'I will ask again'","No ownership of schedule changes","Does not mention documentation or follow-up"],
+ score:["1 = no process","3 = basic follow-up and scheduling","5 = structured coordination with tracker, confirmation and escalation"]
+},
+"Candidate screening":{
+ depth:"Basic recruitment judgement expected; do not expect senior recruiter-level assessment.",
+ strong:["Checks availability, location, shift fit and role relevance","Looks for customer-service or teamwork signals","Notices consistency, presentation and communication quality","Shortlists based on role requirements, not personal preference"],
+ green:["Role-fit thinking","Practical screening criteria","Fair and consistent judgement"],
+ weak:["Only focuses on university or appearance","No link to job requirements","Overly subjective or biased criteria"],
+ score:["1 = random criteria","3 = mentions basic fit factors","5 = role-specific, fair and practical screening logic"]
+},
+"Employee engagement":{
+ depth:"Looking for organising ability and people awareness, not a full engagement strategy.",
+ strong:["Explains planning, communication and task ownership","Considers participant experience","Coordinates materials, timing and follow-up","Reflects on what made the activity work"],
+ green:["Behind-the-scenes ownership","People-oriented mindset","Clear coordination details"],
+ weak:["Only says 'I joined' with no contribution","No planning detail","Cannot explain impact"],
+ score:["1 = no clear role","3 = helped with tasks","5 = owned logistics and improved participant experience"]
+},
+"Confidentiality & maturity":{
+ depth:"HR maturity check. Strong answer should show discretion and escalation judgement.",
+ strong:["Keeps information confidential","Does not gossip or share casually","Documents only where appropriate","Escalates to HR/supervisor when needed"],
+ green:["Professional boundaries","Knows when to escalate","Respectful language"],
+ weak:["Promises secrecy in all cases","Shares with peers","No escalation awareness"],
+ score:["1 = unsafe judgement","3 = understands basic confidentiality","5 = discreet, balanced and escalation-aware"]
+},
+"Forecast & inventory thinking":{
+ depth:"Internship-level supply chain logic expected — not advanced forecasting expertise.",
+ strong:["Checks current stock and safety stock","Looks at forecast, recent sales and demand trend","Considers lead time and supplier availability","Checks pending POs/transfers before suggesting purchase"],
+ green:["Uses data before action","Mentions lead time/inventory/forecast","Balances urgency with accuracy"],
+ weak:["Immediately says 'buy more'","No inventory or lead-time check","Ignores existing stock movement"],
+ score:["1 = guesswork","3 = checks stock and demand","5 = systematic check of forecast, inventory, lead time and supplier constraints"]
+},
+"Supplier research":{
+ depth:"Assess structured trade-off thinking, not procurement mastery.",
+ strong:["Compares price, quality, lead time, reliability and payment terms","Considers consistency and service support","Documents comparison clearly","Recommends based on business priority, not cheapest price only"],
+ green:["Trade-off mindset","Balanced evaluation","Documentation habit"],
+ weak:["Chooses only cheapest supplier","No quality or delivery thinking","Cannot justify recommendation"],
+ score:["1 = price-only answer","3 = compares 2–3 factors","5 = balanced supplier comparison with business rationale"]
+},
+"Warehouse accuracy":{
+ depth:"Reliability and documentation accuracy matter more than technical warehouse knowledge.",
+ strong:["Double-checks data against source documents","Uses checklist or naming system","Records changes immediately","Asks when uncertain rather than guessing"],
+ green:["Attention to detail","Checklist/process mindset","Error prevention"],
+ weak:["Relies on memory","No checking process","Downplays mistakes"],
+ score:["1 = no accuracy habit","3 = basic double-checking","5 = clear prevention system and accountability"]
+},
+"Process improvement":{
+ depth:"Look for practical escalation and documentation, not complex process redesign.",
+ strong:["Observes repeated pattern and gathers examples","Documents issue clearly","Raises to supervisor with possible cause/solution","Respects SOP rather than changing things alone"],
+ green:["Root-cause curiosity","Respectful communication","Practical solution mindset"],
+ weak:["Blames warehouse/team","Changes process without approval","Complains but does not document"],
+ score:["1 = blame/no action","3 = reports issue","5 = documents pattern, suggests fix and escalates appropriately"]
+},
+"Portfolio reasoning":{
+ depth:"Evaluation focus: candidate should explain design intention, not only aesthetics.",
+ strong:["Explains brief, target audience and objective","Mentions hierarchy, typography, layout, colour or brand fit","Connects design choices to communication outcome","Can discuss what they would improve now"],
+ green:["Clear design rationale","Audience and brand awareness","Specific visual decisions"],
+ weak:["Only says 'I liked it'","No brief/objective","Cannot explain layout or typography choices"],
+ score:["1 = taste-only answer","3 = explains basic visual choices","5 = clear brief, rationale, brand fit and reflection"]
+},
+"Feedback handling":{
+ depth:"Coachability check. Strong candidates can defend choices but still revise maturely.",
+ strong:["Listens and clarifies the feedback","Separates personal taste from objective requirements","Revises based on brief/brand/user needs","Explains what they kept and why"],
+ green:["Low ego","Reasoned revisions","Professional response to criticism"],
+ weak:["Gets defensive","Changes everything without thinking","Cannot describe learning"],
+ score:["1 = defensive","3 = accepts feedback","5 = evaluates feedback and revises strategically"]
+},
+"Speed vs quality":{
+ depth:"Looking for workflow under pressure, not perfection.",
+ strong:["Clarifies must-have message and assets","Uses brand guidelines/templates when appropriate","Prioritises readability and hierarchy","Leaves time for quick review/export checks"],
+ green:["Practical workflow","Brand consistency under time pressure","Knows quality-control basics"],
+ weak:["Sacrifices brand completely","No review process","Only focuses on speed"],
+ score:["1 = rushed/no control","3 = basic prioritisation","5 = fast workflow with brand and QC safeguards"]
+},
+"POSM practicality":{
+ depth:"Evaluation focus: listen for print/readability/customer-context awareness.",
+ strong:["Considers viewing distance and readability","Mentions print size, bleed, safe margins or material","Aligns with store context and customer journey","Keeps message clear and on-brand"],
+ green:["Print awareness","Customer-context thinking","Readable hierarchy"],
+ weak:["Treats print like social post only","No size/readability thinking","Ignores physical placement"],
+ score:["1 = no print awareness","3 = mentions readability/size","5 = print-ready, context-aware and brand-consistent thinking"]
+},
+"Content collaboration":{
+ depth:"Tests communication and adaptability with Marketing, not advanced project management.",
+ strong:["Clarifies objective, audience, deadline and required formats","Asks for references/assets/brand guidance","Confirms changes in writing","Adapts while protecting core quality"],
+ green:["Clarifying questions","Written alignment","Flexible but structured"],
+ weak:["Starts without clarifying","Complains about changing brief","No stakeholder communication"],
+ score:["1 = passive/confused","3 = asks basic questions","5 = clarifies, documents and adapts professionally"]
+}
+};
+
+const ROLES={
+"Human Resources Intern — TRG International":{
+ focus:[
+ "Support broad HR operations across recruitment, employee records, onboarding and training materials",
+ "Screen resumes, schedule interviews, update job adverts and assist recruitment administration",
+ "Assist internal events, career days and engagement activities across TRG's diverse community",
+ "Develop exposure to HR compliance, labour-law awareness, HR systems and accurate employee databases"
+ ],
+ signals:[
+ "Detail-oriented and comfortable with administrative work that supports daily HR operations",
+ "People-oriented, professional and able to communicate clearly in English",
+ "Curious about workforce management, recruitment, engagement and talent development",
+ "Adaptable, organised and mature enough to handle confidential HR information"
+ ],
+ qs:[
+ ["TRG HR motivation","What attracted you to this Human Resources Intern role at TRG International, and which part of HR would you most like to explore?","Tests genuine motivation and whether the candidate understands that the role covers several HR areas, not only recruitment.","Motivation"],
+ ["HR admin accuracy","This role involves updating employee information, documents and HR records. How would you make sure your work stays accurate and confidential?","Looks for detail orientation, careful checking habits and professional handling of sensitive information.","Reliability"],
+ ["HR recruitment support","If you were asked to screen CVs, schedule interviews and update job adverts at the same time, how would you organise your workflow?","Tests recruitment support logic, prioritisation and tracker discipline.","Role Fit"],
+ ["Internal events engagement","TRG runs many internal events and activities. Tell me about a time you helped organise an activity, event or group project. What was your contribution?","Checks event coordination, engagement mindset and behind-the-scenes ownership.","Ownership"],
+ ["HR compliance curiosity","HR sometimes involves company policies, labour regulations and sensitive employee information. How would you approach something you were unsure about?","Tests professional maturity, research mindset and escalation judgement.","Judgement"],
+ ["Hybrid collaboration","TRG has a diverse and hybrid working environment. How would you keep communication clear when working with people from different teams or backgrounds?","Looks for adaptability, written communication, independence and stakeholder awareness.","Collaboration"]
+ ]},
+"HR Intern (PJ's Coffee)":{
+ focus:[
+ "Recruitment coordination for Barista and Intern pipelines",
+ "CV screening, candidate pipeline updates, interview scheduling and recruitment ads",
+ "Onboarding documents, welcome kits, orientation logistics and HR records",
+ "Employee engagement activities, internal communication, training materials and HR admin"
+ ],
+ signals:[
+ "Organised, detail-oriented and comfortable coordinating multiple stakeholders",
+ "People-oriented communication in both Vietnamese and English",
+ "Proactive mindset in a fast-paced F&B / retail environment",
+ "Basic HR awareness: recruitment flow, onboarding, employee engagement, confidentiality"
+ ],
+ qs:[
+ ["Motivation for HR in F&B","What drew you to this HR Intern role at PJ’s Coffee specifically, rather than a more general HR internship?","Tests whether the candidate understands HR in a store/F&B setting, not just office-based HR.","Motivation"],
+ ["Recruitment coordination","Imagine you have to schedule interviews with candidates, a store manager and HR, but everyone keeps changing availability. How would you keep the process organised?","Looks for coordination logic, follow-up discipline and calm handling of moving parts.","Reliability"],
+ ["Candidate screening","When screening a Barista or Intern CV, what would you pay attention to first, and why?","Tests judgement, prioritisation and baseline recruitment thinking.","Role Fit"],
+ ["Employee engagement","Tell me about an activity or event you helped organise. What did you do behind the scenes to make it work?","Good HR interns can coordinate details, communicate clearly and support engagement activities.","Ownership"],
+ ["Confidentiality & maturity","If a candidate or employee shared something sensitive with you, how would you handle it?","Tests discretion, professional maturity and whether they know when to escalate.","Judgement"],
+ ["Learning agility","HR operations can involve repetitive admin tasks. How would you keep yourself accurate and motivated?","Looks for humility, consistency, attention to detail and process mindset.","Learning"]
+ ]},
+"Operations Intern — Supply Chain":{
+ focus:[
+ "Monthly forecast maintenance and improving demand forecast accuracy",
+ "Purchasing suggestions based on forecast and inventory",
+ "Supplier research, supplier information updates and purchasing documentation",
+ "Warehouse SOP alignment, accurate stock movement records and transfer preparation"
+ ],
+ signals:[
+ "Comfortable with numbers, Excel, inventory logic and documentation",
+ "Structured thinking around forecast, demand, purchasing and stock movement",
+ "Process-improvement mindset; notices gaps and suggests practical fixes",
+ "Reliable, detail-oriented and able to follow SOPs consistently"
+ ],
+ qs:[
+ ["Supply chain motivation","What interests you about Supply Chain within PJ’s Coffee operations?","Separates genuine operations interest from candidates who only want any internship.","Motivation"],
+ ["Forecast & inventory thinking","If sales demand suddenly increases but stock is limited, what information would you check before suggesting a purchase?","Tests practical judgement: forecast, inventory, lead time, supplier and urgency.","Problem Solving"],
+ ["Supplier research","How would you compare two potential suppliers if price, delivery time and quality were all different?","Looks for structured trade-off thinking rather than choosing the cheapest option.","Judgement"],
+ ["Warehouse accuracy","Tell me about a time you had to be very accurate with data, records or documents. What did you do to avoid mistakes?","Stock movement and SOP tasks require careful documentation.","Reliability"],
+ ["Process improvement","If you noticed a repeated mistake in a warehouse or purchasing process, how would you raise and document it?","Tests initiative, communication and respect for process.","Ownership"],
+ ["Handling routine work","Supply Chain can include repetitive tracking and updating. How do you stay consistent with routine tasks?","Looks for discipline and sustainable work habits.","Learning"]
+ ]},
+"Graphic Design Intern (PJ's Coffee)":{
+ focus:[
+ "Create engaging F&B visual content with the Marketing team",
+ "Design social media posts and edit short videos or GIFs",
+ "Take photos for social content",
+ "Design POSM materials for PJ’s Coffee and document design processes"
+ ],
+ signals:[
+ "Portfolio shows taste, layout control, typography awareness and brand consistency",
+ "Can explain design decisions, not just say 'it looks nice'",
+ "Comfortable receiving feedback and revising quickly",
+ "Understands social content, F&B customer appeal and practical POSM constraints"
+ ],
+ qs:[
+ ["Design motivation","What attracts you to designing for an F&B / coffee brand like PJ’s Coffee?","Tests whether they understand audience, product mood and brand experience.","Motivation"],
+ ["Portfolio reasoning","Choose one piece from your portfolio. What was the brief, your design direction and why did you make those choices?","Strong designers explain hierarchy, typography, layout and intent clearly.","Role Fit"],
+ ["Feedback handling","Tell me about a time someone criticised your design. What did you change and what did you keep?","Tests coachability, design maturity and ownership.","Learning"],
+ ["Speed vs quality","If you had to deliver a social post quickly but still keep it on-brand, how would you approach it?","Looks for workflow, prioritisation and brand consistency under time pressure.","Problem Solving"],
+ ["POSM practicality","What would you consider when designing a printed POSM item for a café?","Tests awareness of print, readability, customer journey and physical context.","Judgement"],
+ ["Content collaboration","How would you work with Marketing if the brief was unclear or changed halfway through?","Tests communication, adaptability and collaboration.","Collaboration"]
+ ]}
+};
+
+const VI_QUESTIONS={
+ "Self-Introduction":"Để bắt đầu, bạn có thể giới thiệu đôi nét về bản thân mình được không?",
+ "Unpaid Internship Awareness":"Trước khi mình đi tiếp, mình muốn xác nhận rõ: kỳ thực tập này hiện không có lương. Bạn đã nắm thông tin này và vẫn cảm thấy phù hợp để tiếp tục quy trình chứ?",
+ "Commitment Duration":"Bạn có thể cam kết thực tập trong khoảng bao nhiêu tháng?",
+ "Working Hours":"Bạn có thể làm việc khoảng bao nhiêu giờ mỗi ngày? Mình cũng xác nhận thêm là vị trí này không yêu cầu làm việc cuối tuần.",
+ "Start Date":"Nếu nhận được offer cho vị trí này, thời gian sớm nhất bạn có thể bắt đầu là khi nào?",
+ "University Requirement":"Kỳ thực tập này là yêu cầu từ trường của bạn, hay là bạn chủ động tìm kiếm thêm trải nghiệm thực tế cho bản thân?",
+ "Office Commute":"Bạn có cảm thấy thuận tiện khi di chuyển đến văn phòng TRG ở đường Nguyễn Cơ Thạch không? Việc đi lại có điểm nào cần lưu ý không?",
+ "TRG HR motivation":"Điều gì khiến bạn quan tâm đến vị trí Human Resources Intern tại TRG International, và bạn muốn khám phá mảng nào của HR nhất?",
+ "HR admin accuracy":"Vị trí này sẽ có các đầu việc cập nhật thông tin nhân viên, hồ sơ và tài liệu HR. Bạn sẽ làm gì để đảm bảo công việc của mình chính xác và bảo mật?",
+ "HR recruitment support":"Nếu bạn cần vừa lọc CV, vừa xếp lịch phỏng vấn, vừa cập nhật tin tuyển dụng cùng lúc, bạn sẽ sắp xếp quy trình làm việc của mình như thế nào?",
+ "Internal events engagement":"TRG có nhiều hoạt động và sự kiện nội bộ. Hãy kể về một lần bạn từng hỗ trợ tổ chức một hoạt động, sự kiện hoặc dự án nhóm. Đóng góp cụ thể của bạn là gì?",
+ "HR compliance curiosity":"HR đôi khi liên quan đến chính sách công ty, quy định lao động và thông tin nhạy cảm của nhân viên. Nếu gặp một vấn đề bạn chưa chắc chắn, bạn sẽ xử lý như thế nào?",
+ "Hybrid collaboration":"TRG có môi trường làm việc đa dạng và linh hoạt. Bạn sẽ làm gì để giao tiếp rõ ràng khi làm việc với nhiều team hoặc nhiều nền tảng khác nhau?",
+ "Motivation for HR in F&B":"Điều gì khiến bạn quan tâm đến vị trí HR Intern tại PJ’s Coffee, thay vì một kỳ thực tập HR tổng quát hơn?",
+ "Recruitment coordination":"Giả sử bạn cần xếp lịch phỏng vấn giữa ứng viên, quản lý cửa hàng và HR, nhưng lịch của mọi người liên tục thay đổi. Bạn sẽ làm thế nào để giữ quy trình thật gọn gàng và không bị sót thông tin?",
+ "Candidate screening":"Khi xem CV cho vị trí Barista hoặc Intern, bạn sẽ chú ý đến những điểm nào trước tiên, và vì sao?",
+ "Employee engagement":"Hãy kể về một hoạt động hoặc sự kiện mà bạn từng hỗ trợ tổ chức. Phía sau hậu trường, bạn đã làm những gì để hoạt động đó diễn ra suôn sẻ?",
+ "Confidentiality & maturity":"Nếu một ứng viên hoặc nhân viên chia sẻ với bạn một thông tin nhạy cảm, bạn sẽ xử lý thông tin đó như thế nào?",
+ "Learning agility":"Công việc HR đôi khi có nhiều đầu việc hành chính lặp lại. Bạn sẽ làm gì để giữ sự chính xác và duy trì động lực khi xử lý những công việc như vậy?",
+ "Supply chain motivation":"Điều gì khiến bạn quan tâm đến mảng Supply Chain trong hoạt động vận hành của PJ’s Coffee?",
+ "Forecast & inventory thinking":"Nếu nhu cầu bán hàng tăng đột ngột nhưng lượng hàng tồn kho lại hạn chế, bạn sẽ kiểm tra những thông tin nào trước khi đề xuất mua thêm hàng?",
+ "Supplier research":"Bạn sẽ so sánh hai nhà cung cấp như thế nào nếu giá, thời gian giao hàng và chất lượng của họ đều khác nhau?",
+ "Warehouse accuracy":"Hãy kể về một lần bạn cần làm việc thật chính xác với dữ liệu, hồ sơ hoặc tài liệu. Bạn đã làm gì để tránh sai sót?",
+ "Process improvement":"Nếu bạn nhận thấy một lỗi lặp đi lặp lại trong quy trình kho hoặc mua hàng, bạn sẽ trao đổi và ghi nhận vấn đề đó như thế nào?",
+ "Handling routine work":"Supply Chain có thể bao gồm nhiều công việc theo dõi và cập nhật lặp lại. Bạn thường làm gì để duy trì sự ổn định và chính xác với những công việc như vậy?",
+ "Design motivation":"Điều gì thu hút bạn khi thiết kế hình ảnh cho một thương hiệu F&B hoặc cà phê như PJ’s Coffee?",
+ "Portfolio reasoning":"Hãy chọn một sản phẩm trong portfolio của bạn và chia sẻ về brief, định hướng thiết kế, cũng như lý do bạn đưa ra những lựa chọn đó.",
+ "Feedback handling":"Hãy kể về một lần thiết kế của bạn nhận được góp ý hoặc phê bình. Bạn đã thay đổi điều gì và quyết định giữ lại điều gì?",
+ "Speed vs quality":"Nếu bạn cần hoàn thành một bài social post trong thời gian ngắn nhưng vẫn phải giữ đúng tinh thần thương hiệu, bạn sẽ tiếp cận công việc đó như thế nào?",
+ "POSM practicality":"Khi thiết kế một ấn phẩm POSM in ấn cho quán cà phê, bạn sẽ cân nhắc những yếu tố thực tế nào?",
+ "Content collaboration":"Nếu brief từ Marketing chưa rõ ràng hoặc thay đổi giữa chừng, bạn sẽ phối hợp với team như thế nào?"
+};
+
+function viQuestionBox(title){
+ const vi=VI_QUESTIONS[title];
+ if(!vi) return '';
+ return `<div class="vi-toggle-row"><button type="button" class="vi-toggle" onclick="toggleQuestionVi(this)">Show Vietnamese translation</button></div><div class="vi-question"><b>Bản dịch tiếng Việt</b>${vi}</div>`;
+}
+function toggleQuestionVi(btn){
+ const box=btn.parentElement.nextElementSibling;
+ if(!box) return;
+ const open=box.classList.toggle('open');
+ btn.classList.toggle('on',open);
+ btn.textContent=open?'Hide Vietnamese translation':'Show Vietnamese translation';
+}
+
+const REPHRASE={
+ "TRG HR motivation":{
+  rephrase:"What made you interested in this HR internship at TRG, and which HR area are you most curious to learn about?",
+  explain:"I want to understand your genuine interest in HR and whether you see this as a chance to explore recruitment, employee engagement, HR operations or broader workforce management."
+ },
+ "HR admin accuracy":{
+  rephrase:"If you had to update HR records or employee information, how would you keep the work accurate and private?",
+  explain:"This is about your working habits with details, documents and confidential information, not about already knowing advanced HR systems."
+ },
+ "HR recruitment support":{
+  rephrase:"If several recruitment tasks came in at the same time, how would you organise and prioritise them?",
+  explain:"Think about CV screening, interview scheduling, job advert updates, trackers and candidate follow-up. I’m checking your process, not expecting senior recruiter experience."
+ },
+ "Internal events engagement":{
+  rephrase:"Can you tell me about an activity, event or group project you helped organise, and what you personally handled?",
+  explain:"I’m looking for your behind-the-scenes contribution, such as planning, communication, logistics, materials or participant support."
+ },
+ "HR compliance curiosity":{
+  rephrase:"If you faced an HR policy or employee-information issue that you were unsure about, what would you do?",
+  explain:"I’m checking whether you would research carefully, protect confidentiality and ask your supervisor instead of guessing."
+ },
+ "Hybrid collaboration":{
+  rephrase:"How would you keep your communication clear when working with people from different teams, backgrounds or locations?",
+  explain:"You can talk about written updates, confirming expectations, asking questions early and working independently in a hybrid environment."
+ },
+ "Motivation for HR in F&B":{
+  rephrase:"What made you interested in doing HR work for PJ’s Coffee, specifically in an F&B or store environment?",
+  explain:"I’m trying to understand why this role interests you, and whether you have thought about how HR supports people in a coffee-store business."
+ },
+ "Recruitment coordination":{
+  rephrase:"If interview schedules kept changing, how would you organise the communication and avoid missing anything?",
+  explain:"Think about the steps you would take: who you would update, what tools you would use, and how you would keep the process clear."
+ },
+ "Candidate screening":{
+  rephrase:"When you look at a CV for a Barista or Intern role, what details would you check first to decide whether the person may be suitable?",
+  explain:"You don’t need a senior recruiter answer. I want to hear your basic judgement and what information you think matters for this role."
+ },
+ "Employee engagement":{
+  rephrase:"Can you describe an event or activity you helped organise, and what you personally did behind the scenes?",
+  explain:"Focus on your own contribution, such as planning, preparing materials, coordinating people, or solving small issues."
+ },
+ "Confidentiality & maturity":{
+  rephrase:"If someone told you private or sensitive information at work, what would you do with that information?",
+  explain:"I’m checking your sense of professionalism, discretion, and whether you know when to keep things confidential or escalate to HR."
+ },
+ "Learning agility":{
+  rephrase:"Some HR tasks are repetitive and detail-heavy. How would you stay careful, accurate and motivated while doing them?",
+  explain:"You can talk about your habits, tools or mindset when handling admin work, tracking tasks or repeating the same process."
+ },
+ "Supply chain motivation":{
+  rephrase:"What makes you interested in Supply Chain work, especially in the operations of a coffee brand like PJ’s Coffee?",
+  explain:"I want to know whether you are genuinely curious about operations, inventory, purchasing or how products move behind the scenes."
+ },
+ "Forecast & inventory thinking":{
+  rephrase:"If demand went up but stock was running low, what would you check before recommending that the team buy more?",
+  explain:"Think step by step. For example, what data, stock information, supplier timing or business priorities would you look at before acting?"
+ },
+ "Supplier research":{
+  rephrase:"If two suppliers have different strengths and weaknesses, how would you compare them and decide which one is better?",
+  explain:"You can consider price, quality, delivery time, reliability and how well each option supports the business need."
+ },
+ "Warehouse accuracy":{
+  rephrase:"Can you tell me about a time when accuracy was important in your work or study, and how you avoided mistakes?",
+  explain:"This does not have to be warehouse-related. I’m looking for your habits when handling data, records, documents or detailed tasks."
+ },
+ "Process improvement":{
+  rephrase:"If you noticed the same mistake happening again and again in a process, how would you raise it and record it properly?",
+  explain:"I’m looking for how you communicate the issue, document evidence and suggest improvement without blaming people."
+ },
+ "Handling routine work":{
+  rephrase:"How do you stay focused and consistent when you have to do repeated tracking or updating tasks?",
+  explain:"You can describe how you organise yourself, check your work and keep your attention on routine tasks."
+ },
+ "Design motivation":{
+  rephrase:"Why are you interested in creating visuals for an F&B or coffee brand like PJ’s Coffee?",
+  explain:"I want to understand your interest in this brand context, such as product visuals, customer mood, social content or café experience."
+ },
+ "Portfolio reasoning":{
+  rephrase:"Please choose one design from your portfolio and explain the brief, your idea and why you designed it that way.",
+  explain:"Walk me through your design thinking. You can mention the audience, layout, typography, colour, brand fit or message."
+ },
+ "Feedback handling":{
+  rephrase:"Can you tell me about a time someone gave feedback on your design, and how you responded to it?",
+  explain:"I want to see how you handle criticism, decide what to change, and explain your design choices professionally."
+ },
+ "Speed vs quality":{
+  rephrase:"If you had to create a social post quickly but still make it look on-brand, what steps would you take?",
+  explain:"Think about your workflow under time pressure: what you prioritise, what you check, and how you maintain quality."
+ },
+ "POSM practicality":{
+  rephrase:"When designing something printed for a café, what practical things would you need to consider?",
+  explain:"For example, readability, size, distance, print setup, placement in the store, customer attention and brand consistency."
+ },
+ "Content collaboration":{
+  rephrase:"If the Marketing brief was unclear or changed halfway through, how would you work with the team?",
+  explain:"I’m checking how you clarify expectations, communicate changes and stay flexible without losing quality."
+ }
+};
+
+function rephraseBox(title){
+ const r=REPHRASE[title];
+ if(!r) return '';
+ return `<div class="guide rephrase-guide">
+  <div class="guide-head" onclick="this.parentElement.classList.toggle('open')"><span>Candidate Clarification Support</span><span>Rephrase or explain the question</span></div>
+  <div class="guide-body">
+    <div class="rephrase-card">
+      <div class="rephrase-item"><h4>Rephrase the question</h4><p>"${r.rephrase}"</p></div>
+      <div class="rephrase-item"><h4>Explain what you mean</h4><p>"${r.explain}"</p></div>
+    </div>
+  </div>
+ </div>`;
+}
+
+const CORE=[
+ ["Self-Introduction","To get started, could you tell us a bit about yourself?","Listen for: communication clarity, relevance, confidence. Ideal: 2–3 minutes covering background, studies and motivation.","English","intro"],
+ ["Unpaid Internship Awareness","Before we go further — this is an unpaid internship. Are you fully aware of that, and comfortable proceeding on that basis?","If yes, move on. If hesitant, clarify the arrangement and ask again.","Logistics","pay"],
+ ["Commitment Duration","How many months are you able to commit to this internship?","Check alignment with the minimum required duration and role continuity.","Logistics","duration"],
+ ["Working Hours","How many hours per day are you available to work? Just to confirm — this role does not require weekend work.","Confirm availability aligns with office hours. Note any constraints.","Logistics","hours"],
+ ["Start Date","If you were offered the position, when would you be able to start?","Immediate start or a clear specific date is preferred.","Logistics","start"],
+ ["University Requirement","Is this internship a requirement from your university, or is it something you're pursuing on your own initiative?","Either is fine. Helps understand motivation and any university reporting obligations.","Logistics","itype"],
+ ["Office Commute","Are you comfortable getting to the TRG office on Nguyễn Cơ Thạch Street? Is the commute convenient for you?","Confirm no commute concerns that may affect attendance or punctuality.","Logistics","commute"]
+];
+const CHIPS=["Specific example","Clear personal contribution","Structured answer","Good ownership","Strong self-awareness","Practical thinking","Role understanding","Positive energy"];
+const FLAGS=["Vague/scripted","Avoided question","Blamed others","Low motivation","Weak English","Availability risk","Commitment risk","Commute concern"];
+let state={scores:{},chips:{},notes:{},decision:"",outType:"ats",logistics:{}};
+const roleSel=document.getElementById('role');
+const ROLE_LABELS={
+ "Human Resources Intern — TRG International":"HR Intern · TRG International",
+ "HR Intern (PJ's Coffee)":"HR Intern · PJ’s Coffee",
+ "Operations Intern — Supply Chain":"Supply Chain Intern · Operations",
+ "Graphic Design Intern (PJ's Coffee)":"Graphic Design Intern · PJ’s Coffee"
+};
+Object.keys(ROLES).forEach(r=>roleSel.add(new Option(ROLE_LABELS[r] || r,r)));
+roleSel.onchange=()=>{clearRoleSpecificState();render();};
+document.addEventListener('input',save);
+document.querySelectorAll('[data-out]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-out]').forEach(x=>x.classList.remove('on'));b.classList.add('on');state.outType=b.dataset.out;generate();save();});
+document.querySelectorAll('[data-decision]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-decision]').forEach(x=>x.classList.remove('on'));b.classList.add('on');state.decision=b.dataset.decision;calc();save();});
+function li(list,el){el.innerHTML=list.map(x=>`<li>${x}</li>`).join('')}
+function listItems(arr){return (arr||[]).map(x=>`<li>${x}</li>`).join('')}
+function guideBox(title){
+ const g=GUIDE[title];
+ if(!g) return '';
+ return `<div class="guide">
+  <div class="guide-head" onclick="this.parentElement.classList.toggle('open')"><span>Interviewer Evaluation Guide</span><span>View evaluation cues</span></div>
+  <div class="guide-body">
+    <div class="gbox"><h4>Strong answers include</h4><ul>${listItems(g.strong)}</ul></div>
+    <div class="gbox"><h4>Green flags</h4><ul>${listItems(g.green)}</ul></div>
+    <div class="gbox"><h4>Weak signals</h4><ul>${listItems(g.weak)}</ul></div>
+    <div class="gbox"><h4>Quick score cues</h4><ul>${listItems(g.score)}</ul></div>
+  </div>
+  <div style="padding:0 12px 12px"><span class="depth">${g.depth}</span></div>
+ </div>`;
+}
+function optButtons(group, items){
+ return `<div class="chips original-options">${items.map(x=>`<button type="button" class="chip" data-loggroup="${group}" data-logval="${x[0]}">${x[1]}</button>`).join('')}</div>`;
+}
+function logisticsControls(kind){
+ if(kind==='intro') return `<label>English proficiency observed</label>${optButtons('eng',[["Basic","Basic"],["Conversational","Conversational"],["Good — confident","Good & Confident"],["Fluent","Fluent"]])}
+  <label>Communication style</label>${optButtons('commstyle',[["Direct & concise","Direct & concise"],["Structured & methodical","Structured & methodical"],["Enthusiastic & expressive","Enthusiastic & expressive"],["Reserved but precise","Reserved but precise"]])}`;
+ if(kind==='pay') return `<label>Response</label>${optButtons('pay',[["Confirmed — comfortable","✓ Confirmed & comfortable"],["Hesitant — needed clarification","Hesitant, clarified"],["Not comfortable — proceeded","Not comfortable"]])}`;
+ if(kind==='duration') return `<label>Candidate's answer</label>${optButtons('dur',[["1 month","1 month"],["2 months","2 months"],["3 months","3 months"],["4 months","4 months"],["5 months","5 months"],["6 months","6 months"]])}<div class="field" style="margin-top:8px"><label>Minimum required</label><input data-loginput="dur_min" placeholder="e.g. 2 months"></div>`;
+ if(kind==='hours') return `<label>Hours per week</label>${optButtons('hrs',[["25 hrs/week","25 hrs/week"],["30 hrs/week","30 hrs/week"],["35 hrs/week","35 hrs/week"],["40 hrs/week","40 hrs/week"]])}`;
+ if(kind==='start') return `${optButtons('startdate',[["Available immediately","Available immediately"]])}<div class="field" style="margin-top:8px"><label>Or specific date</label><input type="date" data-loginput="startdate_raw"></div>`;
+ if(kind==='itype') return `<label>Type</label>${optButtons('itype',[["University requirement","📚 University requirement"],["Personal initiative","🙋 Personal initiative"],["Both","Both"]])}`;
+ if(kind==='commute') return `<label>Commute status</label>${optButtons('commute',[["No concerns — convenient","✓ Convenient, no issues"],["Minor concerns noted","Minor concerns noted"],["Significant commute concern","Significant concern"]])}`;
+ return '';
+}
+function qCard(q,i,prefix){
+ const id=prefix+i;
+ const kind=q[4]||'';
+ const isOperational = q[3] === 'Logistics';
+ const original=kind?`<div class="guide open logistics-guide"><div class="guide-head"><span>${isOperational?'Quick select options':'Quick select options'}</span><span>${isOperational?'Operational check only':'Use during interview'}</span></div><div class="guide-body" style="display:block"><div class="gbox" style="border:none;padding:0">${logisticsControls(kind)}</div></div></div>`:'';
+ const clarify = (!isOperational && prefix==='r') ? rephraseBox(q[0]) : '';
+ const scoring = isOperational ? '' : `
+  ${clarify}
+  ${guideBox(q[0])}
+  <div class="rubric">${[1,2,3,4,5].map(s=>`<button type="button" class="scorebtn" data-score="${s}" data-id="${id}">${s}<small>${['Poor','Weak','Solid','Strong','Excellent'][s-1]}</small></button>`).join('')}</div>
+  <div class="chips">${CHIPS.map(c=>`<button type="button" class="chip green" data-chip="${c}" data-id="${id}">${c}</button>`).join('')}${FLAGS.map(c=>`<button type="button" class="chip red" data-chip="${c}" data-id="${id}">${c}</button>`).join('')}</div>
+  <div class="auto-score" id="auto-${id}">Suggested score: —</div>`;
+ const notePlaceholder = isOperational ? 'Optional logistics note: constraints, clarification given, documents required, or anything to follow up.' : 'Quick evidence note: what exactly did the candidate say?';
+ return `<div class="q ${isOperational?'operational-q':''}" data-q="${id}" data-title="${q[0]}" data-comp="${q[3]}" data-scoreable="${isOperational?'0':'1'}">
+  <div class="qhead"><div class="badge">${i+1}</div><div class="qbody"><div class="qtitle">${q[0]} · <span style="color:var(--pink)">${q[3]}</span></div><div class="qtext">"${q[1]}"</div></div></div>
+  <div class="vi-block">${viQuestionBox(q[0])}</div>
+  <div class="intent">${q[2]}</div>
+  ${original}
+  ${scoring}
+  <textarea class="note" data-note="${id}" placeholder="${notePlaceholder}"></textarea>
+ </div>`;
+}
+function clearRoleSpecificState(){
+ Object.keys(state.scores||{}).forEach(k=>{if(k.startsWith('r'))delete state.scores[k]});
+ Object.keys(state.chips||{}).forEach(k=>{if(k.startsWith('r'))delete state.chips[k]});
+ Object.keys(state.notes||{}).forEach(k=>{if(k.startsWith('r'))delete state.notes[k]});
+}
+function restoreStaticUI(){
+ document.querySelectorAll('[data-out]').forEach(b=>b.classList.toggle('on', b.dataset.out===state.outType));
+ document.querySelectorAll('[data-decision]').forEach(b=>b.classList.toggle('on', b.dataset.decision===state.decision));
+}
+function render(){
+ const role=roleSel.value, data=ROLES[role];
+ li(data.focus,document.getElementById('focus'));li(data.signals,document.getElementById('signals'));
+ document.getElementById('core').innerHTML=CORE.map((q,i)=>qCard(q,i,'c')).join('');
+ document.getElementById('questions').innerHTML=data.qs.map((q,i)=>`<div class="card">${qCard(q,i,'r')}</div>`).join('');
+ bind();
+ restoreSelections();
+ calc();
+ save();
+}
+function bind(){
+ document.querySelectorAll('[data-score]').forEach(b=>b.onclick=()=>{const id=b.dataset.id;state.scores[id]=+b.dataset.score;document.querySelectorAll(`[data-score][data-id="${id}"]`).forEach(x=>x.classList.remove('on'));b.classList.add('on');calc();save();});
+ document.querySelectorAll('[data-chip]').forEach(b=>b.onclick=()=>{const id=b.dataset.id;state.chips[id]=state.chips[id]||[];b.classList.toggle('on');const c=b.dataset.chip;if(b.classList.contains('on')&&!state.chips[id].includes(c))state.chips[id].push(c);if(!b.classList.contains('on'))state.chips[id]=state.chips[id].filter(x=>x!==c);calc();save();});
+ document.querySelectorAll('[data-note]').forEach(t=>t.oninput=()=>{state.notes[t.dataset.note]=t.value;calc();save();});
+ document.querySelectorAll('[data-loggroup]').forEach(b=>b.onclick=()=>{const g=b.dataset.loggroup;document.querySelectorAll(`[data-loggroup="${g}"]`).forEach(x=>x.classList.remove('on'));b.classList.add('on');state.logistics[g]=b.dataset.logval;if(g==='startdate'){const d=document.querySelector('[data-loginput="startdate_raw"]');if(d)d.value='';state.logistics.startdate_raw='';}calc();save();});
+ document.querySelectorAll('[data-loginput]').forEach(inp=>inp.oninput=()=>{state.logistics[inp.dataset.loginput]=inp.value;if(inp.dataset.loginput==='startdate_raw'&&inp.value){state.logistics.startdate='';document.querySelectorAll('[data-loggroup="startdate"]').forEach(x=>x.classList.remove('on'));}calc();save();});
+}
+function restoreSelections(){
+ document.querySelectorAll('[data-score]').forEach(b=>{if(state.scores[b.dataset.id]==+b.dataset.score)b.classList.add('on')});
+ document.querySelectorAll('[data-chip]').forEach(b=>{if((state.chips[b.dataset.id]||[]).includes(b.dataset.chip))b.classList.add('on')});
+ document.querySelectorAll('[data-note]').forEach(t=>{if(state.notes[t.dataset.note])t.value=state.notes[t.dataset.note]});
+ document.querySelectorAll('[data-loggroup]').forEach(b=>{if(state.logistics&&state.logistics[b.dataset.loggroup]===b.dataset.logval)b.classList.add('on')});
+ document.querySelectorAll('[data-loginput]').forEach(inp=>{if(state.logistics&&state.logistics[inp.dataset.loginput])inp.value=state.logistics[inp.dataset.loginput]});
+}
+function updateSuggestions(){
+ document.querySelectorAll('.q').forEach(q=>{
+   const id=q.dataset.q;
+   const selected=state.chips[id]||[];
+   const green=selected.filter(x=>CHIPS.includes(x)).length;
+   const red=selected.filter(x=>FLAGS.includes(x)).length;
+   let sug='—';
+   if(green||red){
+     let n=Math.max(1,Math.min(5,3+Math.ceil(green/2)-red));
+     sug=n+'/5';
+   }
+   const el=document.getElementById('auto-'+id);
+   if(el) el.textContent='Suggested score from chips: '+sug;
+ });
+}
+function getOperationalStatus(id){
+ const L=state.logistics||{};
+ const map={c0:['eng','commstyle'],c1:['pay'],c2:['dur','dur_min'],c3:['hrs'],c4:['startdate','startdate_raw'],c5:['itype'],c6:['commute']};
+ const keys=map[id]||[];
+ return keys.some(k=>!!L[k]);
+}
+function updateTracker(){
+ const box=document.getElementById('trackerList');
+ if(!box) return;
+ const qEls=[...document.querySelectorAll('.q')];
+ const groups=[
+  ['Core Logistics & English', qEls.filter(q=>q.dataset.q&&q.dataset.q.startsWith('c'))],
+  ['Role Fit Questions', qEls.filter(q=>q.dataset.q&&q.dataset.q.startsWith('r'))]
+ ];
+ let total=0, done=0;
+ const html=groups.map(([name,items])=>{
+   if(!items.length) return '';
+   const rows=items.map(q=>{
+     const id=q.dataset.q;
+     const title=q.dataset.title || q.querySelector('.qtitle')?.innerText?.replace(/\s+·.+/,'') || id;
+     const scoreable=q.dataset.scoreable==='1';
+     const hasScore=!!state.scores[id];
+     const hasOperational=getOperationalStatus(id);
+     const hasNote=!!(state.notes[id]||'').trim();
+     const isDone=scoreable ? hasScore : hasOperational;
+     const isPartial=!isDone && hasNote;
+     total++; if(isDone) done++;
+     const mark=isDone?'✓':(isPartial?'•':'');
+     const cls=isDone?'done':(isPartial?'partial':'');
+     const meta=scoreable ? (hasScore?`Score ${state.scores[id]}/5`:'Not scored') : (hasOperational?'Option selected':'No option yet');
+     return `<button type="button" class="tracker-item ${cls}" data-jump="${id}"><span class="tracker-dot">${mark}</span><span class="tracker-copy"><span class="tracker-name">${title}</span><span class="tracker-meta">${meta}</span></span></button>`;
+   }).join('');
+   return `<div class="tracker-group"><div class="tracker-group-title">${name}</div>${rows}</div>`;
+ }).join('');
+ box.innerHTML=html;
+ const count=document.getElementById('trackerCount');
+ const miniCount=document.getElementById('trackerMiniCount');
+ const prog=document.getElementById('trackerProgress');
+ if(count) count.textContent=`${done}/${total}`;
+ if(miniCount) miniCount.textContent=`${done}/${total}`;
+ if(prog) prog.style.width=total?`${Math.round(done/total*100)}%`:'0%';
+ box.querySelectorAll('[data-jump]').forEach(btn=>{
+   btn.onclick=()=>{
+     const q=document.querySelector(`.q[data-q="${btn.dataset.jump}"]`);
+     if(q){ q.scrollIntoView({behavior:'smooth',block:'center'}); q.classList.add('tracker-focus'); setTimeout(()=>q.classList.remove('tracker-focus'),900); }
+   };
+ });
+}
+
+function toggleQuestionTracker(collapse){
+ const shouldCollapse = collapse === undefined ? !document.body.classList.contains('tracker-collapsed') : collapse;
+ document.body.classList.toggle('tracker-collapsed', shouldCollapse);
+ try{localStorage.setItem('trg_interview_tracker_collapsed_v32', shouldCollapse?'1':'0');}catch(e){}
+ updateTrackerVisibility();
+}
+function restoreTrackerPreference(){
+ try{
+  if(localStorage.getItem('trg_interview_tracker_collapsed_v32')==='1') document.body.classList.add('tracker-collapsed');
+ }catch(e){}
+}
+
+function updateTrackerVisibility(){
+ const canShow = window.scrollY>360 && window.innerWidth>=1180;
+ document.body.classList.toggle('show-tracker', canShow);
+ if(window.innerWidth<1280 && canShow) document.body.classList.add('tracker-collapsed');
+}
+window.addEventListener('scroll',updateTrackerVisibility,{passive:true});
+window.addEventListener('resize',updateTrackerVisibility);
+
+function calc(){
+ updateSuggestions();
+ updateTracker();
+ updateTrackerVisibility();
+ // Logistics is an operational alignment check, not a scored competency.
+ // Remove any legacy logistics scores/chips restored from older versions.
+ document.querySelectorAll('.q[data-scoreable="0"]').forEach(q=>{
+   delete state.scores[q.dataset.q];
+   delete state.chips[q.dataset.q];
+ });
+ const scoreableIds=[...document.querySelectorAll('.q[data-scoreable="1"]')].map(q=>q.dataset.q);
+ const vals=scoreableIds.map(id=>state.scores[id]).filter(Boolean);
+ const flags=scoreableIds.flatMap(id=>state.chips[id]||[]).filter(x=>FLAGS.includes(x));
+ const avg=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+ document.getElementById('avg').textContent=avg?avg.toFixed(1):'0.0';
+ document.getElementById('answered').textContent=vals.length;
+ document.getElementById('risk').textContent=flags.length;
+ document.getElementById('fit').textContent=avg>=4.2?'High':avg>=3.3?'Med':avg?'Low':'—';
+ const eng=state.scores.c0; document.getElementById('engm').textContent=eng||'—';
+ let verdict='Start scoring to get recommendation', emo='📋';
+ if(avg>=4.2 && flags.length<=1){verdict='Recommended: Proceed quickly';emo='✅'}
+ else if(avg>=3.3 && flags.length<=3){verdict='Recommended: Hold / compare with pool';emo='🟡'}
+ else if(avg>0){verdict='Recommended: Not proceeding / review risks';emo='🚩'}
+ document.getElementById('verdict').textContent=state.decision||verdict; document.getElementById('vemoji').textContent=emo;
+ const warn=document.getElementById('warn');
+ const riskTxt=[];
+ if(state.logistics.pay==='Not comfortable — proceeded') riskTxt.push('Candidate is not comfortable with the unpaid internship arrangement.');
+ if(state.logistics.pay==='Hesitant — needed clarification') riskTxt.push('Candidate needed clarification about unpaid arrangement.');
+ if(state.logistics.dur==='1 month') riskTxt.push('Commitment duration is only 1 month.');
+ if(state.logistics.commute==='Significant commute concern') riskTxt.push('Significant commute concern may affect reliability.');
+ if(state.logistics.hrs==='25 hrs/week') riskTxt.push('Availability may need checking against team expectations.');
+ if(state.scores.c0 && state.scores.c0<=2) riskTxt.push('English readiness may be below working requirement.');
+ if(flags.length>=4) riskTxt.push('Multiple red flags selected across scored answers.');
+ warn.innerHTML=riskTxt.join('<br>'); warn.classList.toggle('show',riskTxt.length>0);
+}
+function rows(){
+ return [...document.querySelectorAll('.q')].map(q=>{
+  const id=q.dataset.q, title=q.querySelector('.qtitle').innerText.replace(/\s+·.+/,'');
+  return {id,title,comp:q.dataset.comp,scoreable:q.dataset.scoreable==='1',score:state.scores[id]||0,chips:state.chips[id]||[],note:state.notes[id]||''}
+ });
+}
+function logisticsSummary(){
+ const L=state.logistics||{};
+ const parts=[];
+ if(L.eng) parts.push(`English proficiency: ${L.eng}.`);
+ if(L.commstyle) parts.push(`Communication style: ${L.commstyle}.`);
+ if(L.pay) parts.push(`Unpaid arrangement: ${L.pay}.`);
+ if(L.dur) parts.push(`Commitment: ${L.dur}${L.dur_min?` (minimum required: ${L.dur_min})`:''}.`);
+ if(L.hrs) parts.push(`Availability: ${L.hrs}.`);
+ const start=L.startdate==='Available immediately'?'Available immediately':(L.startdate_raw||'');
+ if(start) parts.push(`Start date: ${start}.`);
+ if(L.itype) parts.push(`Internship type: ${L.itype}.`);
+ if(L.commute) parts.push(`Commute: ${L.commute}.`);
+ return parts.length?parts.join(' '):'No logistics options selected yet.';
+}
+function generate(){
+ calc();
+ const name=document.getElementById('name').value||'Candidate', role=roleSel.value, date=document.getElementById('date').value, interviewer=document.getElementById('interviewer').value||'';
+ const all=rows(), scored=all.filter(r=>r.score), avg=scored.length?(scored.reduce((s,r)=>s+r.score,0)/scored.length).toFixed(1):'N/A';
+ const strengths=all.filter(r=>r.scoreable&&r.score>=4).map(r=>`${r.comp}: ${r.chips.filter(c=>!FLAGS.includes(c)).slice(0,2).join(', ')||'strong response'}`).slice(0,4);
+ const risks=all.filter(r=>r.scoreable&&r.score && r.score<=2).map(r=>`${r.comp}: ${r.chips.filter(c=>FLAGS.includes(c)).slice(0,2).join(', ')||'below expectation'}`).concat(Object.values(state.chips).flat().filter(x=>FLAGS.includes(x))).slice(0,5);
+ const notes=all.filter(r=>r.note).map(r=>`- ${r.title}: ${r.note}`).join('\n');
+ const decision=state.decision || document.getElementById('verdict').textContent;
+ const standout=document.getElementById('standout').value.trim(), reservation=document.getElementById('reservation').value.trim();
+ let text='';
+ if(state.outType==='ats'){
+ text=`INTERVIEW NOTE — ${name}
+${date?`Date: ${date}\n`:''}Role: ${role}${interviewer?`\nInterviewer: ${interviewer}`:''}
+
+Overall score: ${avg}/5
+Recommendation: ${decision}
+
+Logistics:
+${logisticsSummary()}
+
+Summary:
+${standout || `${name} was assessed against core logistics, English communication, role motivation and role-specific behavioural indicators.`}
+
+Key strengths:
+${strengths.length?strengths.map(x=>`- ${x}`).join('\n'):'- No major strength selected yet.'}
+
+Reservations / risks:
+${risks.length?risks.map(x=>`- ${x}`).join('\n'):'- No major reservation selected.'}
+${reservation?`\nAdditional reservation:\n${reservation}`:''}
+
+${notes ? `
+Evidence notes:
+${notes}` : ''}`;
+ } else {
+ text=`HIRING MANAGER SNAPSHOT — ${name}
+
+Applied role: ${role}
+Interview outcome: ${decision}
+Average interview score: ${avg}/5
+
+Logistics snapshot:
+${logisticsSummary()}
+
+Why this candidate may be worth considering:
+${strengths.length?strengths.map(x=>`- ${x}`).join('\n'):'- Strengths have not been clearly evidenced yet.'}
+
+Points to verify in the next round:
+${risks.length?risks.map(x=>`- ${x}`).join('\n'):'- No major risks were flagged in this round.'}
+
+Suggested next-round focus:
+- Probe practical role readiness and ask for examples linked to actual day-to-day tasks.
+- Confirm availability, start date and commitment expectations.
+- Ask one deeper follow-up on ownership and learning agility.
+
+Interviewer note:
+${standout || 'No additional interviewer note added.'}`;
+ }
+ document.getElementById('out').textContent=text; save();
+}
+async function copyOut(btn){
+ const out=document.getElementById('out');
+ let text=(out&&out.textContent?out.textContent:'').trim();
+ if(!text || text==='Click Generate after scoring.'){
+  generate();
+  text=(out&&out.textContent?out.textContent:'').trim();
+ }
+ if(!text){return showCopyFeedback(btn,false,'Nothing to copy yet');}
+ let ok=false;
+ try{
+  if(navigator.clipboard && window.isSecureContext){
+   await navigator.clipboard.writeText(text);
+   ok=true;
+  }
+ }catch(e){ok=false;}
+ if(!ok) ok=fallbackCopy(text);
+ showCopyFeedback(btn,ok,ok?'Copied to clipboard':'Copy failed. Select the note manually.');
+}
+function fallbackCopy(text){
+ try{
+  const t=document.createElement('textarea');
+  t.value=text;
+  t.setAttribute('readonly','');
+  t.style.position='fixed';
+  t.style.top='-9999px';
+  t.style.left='-9999px';
+  document.body.appendChild(t);
+  t.focus();
+  t.select();
+  t.setSelectionRange(0,t.value.length);
+  const ok=document.execCommand('copy');
+  document.body.removeChild(t);
+  return !!ok;
+ }catch(e){return false;}
+}
+function showCopyFeedback(btn,ok,msg){
+ const toast=document.getElementById('copyToast');
+ if(toast){
+  toast.textContent=msg;
+  toast.classList.add('show');
+  clearTimeout(window.__copyToastTimer);
+  window.__copyToastTimer=setTimeout(()=>toast.classList.remove('show'),1600);
+ }
+ if(btn){
+  const original=btn.dataset.originalLabel||btn.textContent;
+  btn.dataset.originalLabel=original;
+  btn.textContent=ok?'Copied ✓':'Copy failed';
+  btn.classList.toggle('copy-ok',ok);
+  btn.classList.toggle('copy-fail',!ok);
+  clearTimeout(btn.__copyTimer);
+  btn.__copyTimer=setTimeout(()=>{btn.textContent=original;btn.classList.remove('copy-ok','copy-fail');},1600);
+ }
+}
+function save(){
+ const get=id=>document.getElementById(id);
+ const data={state,fields:{
+  name:(get('name')&&get('name').value)||'',
+  date:(get('date')&&get('date').value)||'',
+  interviewer:(get('interviewer')&&get('interviewer').value)||'',
+  role:roleSel.value,
+  standout:(get('standout')&&get('standout').value)||'',
+  reservation:(get('reservation')&&get('reservation').value)||''
+ }};
+ try{localStorage.setItem('trg_interview_command_centre_v33',JSON.stringify(data));}catch(e){}
+}
+function load(){
+ try{
+  const raw=localStorage.getItem('trg_interview_command_centre_v33')||localStorage.getItem('trg_interview_command_centre_v32')||localStorage.getItem('trg_interview_command_centre_v31')||localStorage.getItem('trg_interview_command_centre_v28')||localStorage.getItem('trg_interview_command_centre_v25')||localStorage.getItem('trg_interview_command_centre_v19')||localStorage.getItem('trg_interview_command_centre_v17')||localStorage.getItem('trg_interview_command_centre_v16')||localStorage.getItem('trg_interview_command_centre_v13')||localStorage.getItem('trg_interview_command_centre_v12')||localStorage.getItem('trg_scorecard_v10')||localStorage.getItem('trg_scorecard_v8')||localStorage.getItem('trg_scorecard_v4')||'{}';
+  const d=JSON.parse(raw);
+  if(d.state)state=d.state;
+  if(!state.logistics)state.logistics={};
+  if(!state.scores)state.scores={};
+  if(!state.chips)state.chips={};
+  if(!state.notes)state.notes={};
+  const set=(id,val)=>{const el=document.getElementById(id); if(el) el.value=val||''};
+  if(d.fields){
+    set('name',d.fields.name); set('date',d.fields.date); set('interviewer',d.fields.interviewer);
+    if(d.fields.role && ROLES[d.fields.role]) roleSel.value=d.fields.role;
+    set('standout',d.fields.standout); set('reservation',d.fields.reservation);
+  }
+ }catch(e){console.warn('Restore skipped:',e)}
+ render();restoreStaticUI();
+}
+function resetAll(){if(confirm('Reset all fields and scores?')){localStorage.removeItem('trg_interview_command_centre_v33');localStorage.removeItem('trg_interview_command_centre_v32');localStorage.removeItem('trg_interview_command_centre_v31');localStorage.removeItem('trg_interview_command_centre_v28');localStorage.removeItem('trg_interview_command_centre_v25');localStorage.removeItem('trg_interview_command_centre_v19');localStorage.removeItem('trg_interview_command_centre_v17');localStorage.removeItem('trg_interview_command_centre_v16');localStorage.removeItem('trg_interview_command_centre_v13');localStorage.removeItem('trg_interview_command_centre_v12');localStorage.removeItem('trg_scorecard_v10');localStorage.removeItem('trg_scorecard_v8');localStorage.removeItem('trg_scorecard_v4');localStorage.removeItem('trg_interview_tracker_collapsed_v32');localStorage.removeItem('trg_interview_tracker_collapsed_v32');location.reload()}}
+
+function initQaResponseBank(){
+  document.querySelectorAll('.qa-bank-card .qa-item h3').forEach((heading, index)=>{
+    heading.setAttribute('role','button');
+    heading.setAttribute('tabindex','0');
+    heading.setAttribute('aria-expanded','false');
+    const toggle=()=>{
+      const item=heading.closest('.qa-item');
+      if(!item) return;
+      const willOpen=!item.classList.contains('open');
+      document.querySelectorAll('.qa-bank-card .qa-item.open').forEach(el=>{
+        if(el!==item){el.classList.remove('open'); const h=el.querySelector('h3'); if(h) h.setAttribute('aria-expanded','false');}
+      });
+      item.classList.toggle('open',willOpen);
+      heading.setAttribute('aria-expanded',String(willOpen));
+    };
+    heading.addEventListener('click',toggle);
+    heading.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+    if(index===0){
+      const item=heading.closest('.qa-item');
+      if(item){item.classList.add('open');heading.setAttribute('aria-expanded','true');}
+    }
+  });
+}
+
+restoreTrackerPreference();
+load();
+initQaResponseBank();
+initTimeline();
+</script>
+</body>
+</html>
